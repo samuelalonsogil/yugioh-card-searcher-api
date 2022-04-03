@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-
+import sadyugi from './raw/Yu-Gi-Oh-Sad-2.jpg';
 
 export default function Home() {
 
@@ -36,7 +36,7 @@ export default function Home() {
             //cardName === null ? setName('') : setName(cardName) && setFound(true);
 
         } catch (err) {
-            alert('no card found');
+            setImage(sadyugi);
             console.log(err);
             setFound(false);
         }
@@ -69,10 +69,13 @@ export default function Home() {
                         <div id={'formulary-elements'}>
                             <label>
                                 <p id={'introduce-card-p'}>Search by name:</p>
-                                <input id={'input-card-name'} type={'text'} value={name} name={'name'} onChange={handleChange}/>
+                                <input id={'input-card-name'} type={'text'} value={name} name={'name'}
+                                       onChange={handleChange}/>
                             </label>
                             <br/>
-                            <button id={'button-search'} type={'submit'} name={'button-search'} value={'search card'}>search</button>
+                            <button id={'button-search'} type={'submit'} name={'button-search'}
+                                    value={'search card'}>search
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -81,6 +84,12 @@ export default function Home() {
 
                 <div id={'container-results'}>
                     {found && <img id={'card-image-yu-gi-oh'} src={image} alt={'yu-gi-oh card image'}/>}
+                    {!found &&
+                        <div>
+                            <img id={'no-card-found'} src={sadyugi} alt={'no-card-found-image'}/>
+                            <p id={'name-doesnt-exist'}>Sorry the card <span id={'card-name-no-existing'}>'{name}'</span> doesn't exists :(</p>
+                        </div>
+                    }
                 </div>
             </div>
 

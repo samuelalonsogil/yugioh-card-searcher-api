@@ -116,3 +116,15 @@ button:hover{
     background-color: palegoldenrod;
 }
 
+#no-card-found{
+    width: 200px;
+}
+
+#card-name-no-existing{
+    color: indianred;
+}
+
+#name-doesnt-exist{
+    font-family: Verdana, serif;
+}
+
