@@ -27,7 +27,7 @@ code {
 #main-page {
     display: flex;
     flex-direction: column;
-    background-color: red;
+    background-color: darkgray;
 
 }
 
@@ -36,11 +36,7 @@ code {
     padding: 5px;
 }
 
-button:hover{
-    background-color: indianred;
-    transition: background-color 1s, box-shadow 1s;
 
-}
 
 .links {
     display: flex;
@@ -50,6 +46,7 @@ button:hover{
     margin-right: 10px;
     margin-left: 10px;
 
+    text-decoration: none;
     border-radius: 25px;
     background: gray;
     padding: 5px;
@@ -58,3 +55,64 @@ button:hover{
     transition: background-color .5s;
 
 }
+
+button:hover{
+    background-color: indianred;
+    transition: background-color 1s, box-shadow 1s;
+
+}
+
+#main-container-searcher{
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+#container-card-name{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: #282c34;
+    border-radius: 25px;
+    width: 300px;
+    height: 200px;
+}
+
+#container-results{
+    display: flex;
+    flex-direction: column;
+    margin-left: 60px;
+    justify-content: center;
+}
+
+#card-image-yu-gi-oh{
+    width: 200px;
+}
+
+#input-card-name{
+    border-radius: 25px;
+}
+
+#introduce-card-p{
+    font-size:x-small;
+    font-family: Verdana, Tahoma, serif;
+    color: darkgray;
+    margin-bottom: -0.2px;
+}
+
+#formulary-elements{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#button-search{
+    border-radius: 25px;
+    background-color: palegoldenrod;
+}
+

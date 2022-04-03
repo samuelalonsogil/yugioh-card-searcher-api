@@ -6,6 +6,7 @@ export default function Home() {
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
     const [image, setImage] = useState('');
+    const [type, setType] = useState('');
 
     let handleSubmit = async e => {
         e.preventDefault();
@@ -18,21 +19,24 @@ export default function Home() {
             console.log(data.data[0].name);
 
             let cardName = data.data[0].name;
+            let cardType = data.data[0].type;
             let cardImage = data.data[0].card_images[0].image_url;
 
-            if (cardName === null){
+            if (cardName === null) {
                 setName('')
                 setFound(false);
                 setImage('');
-            }else{
+                setType('')
+            } else {
                 setName(cardName);
+                setType(cardType);
                 setImage(cardImage);
                 setFound(true);
             }
             //cardName === null ? setName('') : setName(cardName) && setFound(true);
 
         } catch (err) {
-            alert('error ' + err);
+            alert('no card found');
             console.log(err);
             setFound(false);
         }
@@ -60,25 +64,29 @@ export default function Home() {
         <>
             <div id={'main-container-searcher'}>
 
-                <div>
-                    <h3>Insert name card</h3>
+                <div id={'container-card-name'}>
                     <form onSubmit={handleSubmit}>
-                        <label>
-                            Insert card to search <input type={'text'} value={name} name={'name'}
-                                                         onChange={handleChange}/>
-                        </label>
-                        <input type={'submit'} name={'button-search'} value={'search card'}/>
+                        <div id={'formulary-elements'}>
+                            <label>
+                                <p id={'introduce-card-p'}>Search by name:</p>
+                                <input id={'input-card-name'} type={'text'} value={name} name={'name'} onChange={handleChange}/>
+                            </label>
+                            <br/>
+                            <button id={'button-search'} type={'submit'} name={'button-search'} value={'search card'}>search</button>
+                        </div>
                     </form>
                 </div>
 
                 <br/>
 
                 <div id={'container-results'}>
-                    {found && <span>{name}</span>}
-                    {found && <img src={image}/>}
-
+                    {found && <img id={'card-image-yu-gi-oh'} src={image} alt={'yu-gi-oh card image'}/>}
                 </div>
+            </div>
 
+            <div id={'details-results'}>
+                {found && <p id={'details-card-name'}>{name} </p>}
+                {found && <p id={'details-card-type'}>{type} </p>}
             </div>
         </>
     )
