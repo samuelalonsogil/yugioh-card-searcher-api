@@ -17,10 +17,20 @@ code {
     flex-direction: row;
     justify-content: flex-start;
 
-    background-color: #282c34;
+    background-color: #0C0E13;
     border-radius: 5px;
     padding: 10px;
     color: white;
+
+}
+
+
+
+#search-card-bar{
+    width: 150px;
+    height: 15px;
+    margin-left: 220px;
+    background-color: #282c34;
 
 }
 
@@ -47,10 +57,14 @@ code {
     margin-left: 10px;
 
     text-decoration: none;
-    border-radius: 25px;
-    background: gray;
-    padding: 5px;
-    color: black;
+    border-radius: 4px;
+    background: #0E1015;
+    padding: 4px;
+
+    border-color: dimgray;
+    border-width: thin;
+    border-style: dot-dot-dash;
+    color: dimgray;
     font-family: Arial, serif;
     transition: background-color .5s;
 
@@ -58,8 +72,13 @@ code {
 
 button:hover{
     background-color: indianred;
-    transition: background-color 1s, box-shadow 1s;
+    transition: background-color 1s, color 1s;
+    color: white;
 
+}
+
+.links:visited{
+    color: white;
 }
 
 #main-container-searcher{
@@ -114,6 +133,7 @@ button:hover{
 #button-search{
     border-radius: 25px;
     background-color: palegoldenrod;
+
 }
 
 #no-card-found{
