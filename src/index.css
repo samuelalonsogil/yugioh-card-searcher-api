@@ -5,6 +5,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #0e1015;
 }
 
 code {
@@ -15,29 +16,119 @@ code {
 #navbar {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
 
-    background-color: #0C0E13;
+    background-color: #201c24;
     border-radius: 5px;
     padding: 10px;
     color: white;
 
 }
 
+#button-search-navbar{
+ height: min-content;
+}
 
+#container-logo-buttons {
+    display: flex;
+    flex-direction: row;
 
-#search-card-bar{
-    width: 150px;
-    height: 15px;
-    margin-left: 220px;
+}
+
+#container-search-card-bar {
+    display: flex;
+    flex-direction: row;
+}
+
+#input-name-search{
+    width: 200px;
     background-color: #282c34;
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 4px;
 
+    border-color: dimgray;
+    border-width: thin;
+    border-style: dot-dot-dash;
+    color: dimgray;
+
+}
+
+#search-card-bar {
+    width: 250px;
+    height: 15px;
+    background-color: #282c34;
+}
+
+#main-container{
+    display: flex;
+    flex-direction: row;
+}
+
+#main-container-searcher {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 350px;
+    height: 80%;
+    background-color: #201c24;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+#container-button-search{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+#button-search-formulary{
+    width: 100px;
+    background-color: orange;
+}
+
+#selector{
+    background-color: #282c34;
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 4px;
+
+    border-color: dimgray;
+    border-width: thin;
+    border-style: dot-dot-dash;
+    color: dimgray;
+}
+
+#container-atk-def{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.atk-def{
+    width: 50px;
+    background-color: #282c34;
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 4px;
+
+    border-color: dimgray;
+    border-width: thin;
+    border-style: dot-dot-dash;
+    color: dimgray;
+}
+
+.text-labels{
+    color: dimgray;
+    margin-bottom: -1px;
 }
 
 #main-page {
     display: flex;
     flex-direction: column;
-    background-color: darkgray;
+    background-color: #0e1015;
 
 }
 
@@ -45,7 +136,6 @@ code {
     width: 125px;
     padding: 5px;
 }
-
 
 
 .links {
@@ -58,30 +148,36 @@ code {
 
     text-decoration: none;
     border-radius: 4px;
-    background: #0E1015;
+    background: #282c34;
     padding: 4px;
 
     border-color: dimgray;
     border-width: thin;
     border-style: dot-dot-dash;
     color: dimgray;
-    font-family: Arial, serif;
     transition: background-color .5s;
 
 }
 
-button:hover{
+input:hover {
     background-color: indianred;
     transition: background-color 1s, color 1s;
     color: white;
 
 }
 
-.links:visited{
+button:hover {
+    background-color: indianred;
+    transition: background-color 1s, color 1s;
+    color: white;
+
+}
+
+.links:visited {
     color: white;
 }
 
-#main-container-searcher{
+#main-container-searcher {
     display: flex;
     flex-direction: row;
     align-self: center;
@@ -90,7 +186,7 @@ button:hover{
     margin-left: 20px;
 }
 
-#container-card-name{
+#container-card-name {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,50 +197,50 @@ button:hover{
     height: 200px;
 }
 
-#container-results{
+#container-results {
     display: flex;
     flex-direction: column;
     margin-left: 60px;
     justify-content: center;
 }
 
-#card-image-yu-gi-oh{
+#card-image-yu-gi-oh {
     width: 200px;
 }
 
-#input-card-name{
+#input-card-name {
     border-radius: 25px;
 }
 
-#introduce-card-p{
-    font-size:x-small;
+#introduce-card-p {
+    font-size: x-small;
     font-family: Verdana, Tahoma, serif;
     color: darkgray;
     margin-bottom: -0.2px;
 }
 
-#formulary-elements{
+#formulary-elements {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
 
-#button-search{
+#button-search {
     border-radius: 25px;
     background-color: palegoldenrod;
 
 }
 
-#no-card-found{
+#no-card-found {
     width: 200px;
 }
 
-#card-name-no-existing{
+#card-name-no-existing {
     color: indianred;
 }
 
-#name-doesnt-exist{
+#name-doesnt-exist {
     font-family: Verdana, serif;
 }
 

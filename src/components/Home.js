@@ -62,7 +62,61 @@ export default function Home() {
     return (
         <>
             <div id={'main-container'}>
+                <div id={'main-container-searcher'}>
 
+                    <form>
+                        <div id={'container-input-name-search'}>
+                            <p className={'text-labels'}> name of the card:</p>
+                            <input id={'input-name-search'} type={'text'} placeholder={'card name...'}/>
+                        </div>
+
+                        <div id={'container-input-type-search'}>
+                            <p className={'text-labels'}> type of the card:</p>
+                            <select id={'input-type-search'} name={'card-type'} className={'selector'}>
+
+                            </select>
+                        </div>
+
+                        <div id={'container-input-attribute-search'}>
+                            <p className={'text-labels'}> attribute of the card:</p>
+                            <select id={'input-attribute-search'} name={'card-attribute'}>
+
+                            </select>
+                        </div>
+
+                        <div id={'container-input-level-search'}>
+                            <p className={'text-labels'}> level of the card:</p>
+                            <select id={'input-level-search'} name={'card-level'}>
+
+                            </select>
+                        </div>
+
+                        <div id={'container-race-level-search'}>
+                            <p className={'text-labels'}> race of the card:</p>
+                            <select id={'input-race-search'} name={'card-race'}>
+
+                            </select>
+                        </div>
+
+                        <div id={'container-atk-def'}>
+                            <div id={'container-input-atk-search'}>
+                                <p className={'text-labels'}> atk :</p>
+                                <input id={'input-atk-search'}  className={'atk-def'} type={'text'} placeholder={'min atk'}/>
+                            </div>
+
+                            <div id={'container-input-def-search'} >
+                                <p className={'text-labels'}> def :</p>
+                                <input id={'input-def-search'} className={'atk-def'} type={'text'} placeholder={'min def'}/>
+                            </div>
+                        </div>
+
+                        <div id={'container-button-search'}>
+                            <input id={'button-search-formulary'} className={'links'} type={'submit'} value={'search'}/>
+                        </div>
+
+                    </form>
+
+                </div>
             </div>
         </>
     )
