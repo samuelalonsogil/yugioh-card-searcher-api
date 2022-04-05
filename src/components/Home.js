@@ -1,12 +1,34 @@
 import {useState} from "react";
 import sadyugi from './raw/Yu-Gi-Oh-Sad-2.jpg';
+import spell from './raw/spell-yugi.png';
+import trap from './raw/trap-yugi.png';
+import dark from './raw/darkness-yugi.png';
+import light from './raw/light-yugi.png';
+import wind from './raw/wind-yugi.png';
+import fire from './raw/fire-yugi.png';
+import earth from './raw/earth-yugi.png';
+import water from './raw/water-yugi.png';
+import divine from './raw/divine-yugi.png';
+
+function setAttributes(attribute){
+    if (attribute==='Spell Card') return spell;
+    else if (attribute==='Trap Card') return trap;
+    else if (attribute==='FIRE') return fire;
+    else if (attribute==='WATER') return water;
+    else if (attribute==='LIGHT') return light;
+    else if (attribute==='DARK') return dark;
+    else if (attribute==='WIND') return wind;
+    else if (attribute==='EARTH') return earth;
+    else if (attribute==='DIVINE') return divine;
+}
 
 export default function Home() {
-
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
     const [image, setImage] = useState('');
     const [type, setType] = useState('');
+    const [attribute, setAttribute] = useState('');
+
 
     let handleSubmit = async e => {
         e.preventDefault();
@@ -21,16 +43,19 @@ export default function Home() {
             let cardName = data.data[0].name;
             let cardType = data.data[0].type;
             let cardImage = data.data[0].card_images[0].image_url;
+            let attribute = data.data[0].attribute;
 
             if (cardName === null) {
-                setName('')
+                setName('');
                 setFound(false);
                 setImage('');
-                setType('')
+                setType('');
+                setAttribute('');
             } else {
                 setName(cardName);
                 setType(cardType);
                 setImage(cardImage);
+                setAttribute(attribute);
                 setFound(true);
             }
 
@@ -39,18 +64,6 @@ export default function Home() {
             console.log(err);
             setFound(false);
         }
-
-        const rawResponse = await fetch('http://localhost:3000/', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name: name, cardImage: image})
-        });
-
-        const content = await rawResponse.json();
-        console.log(content);
 
     }
 
@@ -64,10 +77,10 @@ export default function Home() {
             <div id={'main-container'}>
                 <div id={'main-container-searcher'}>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div id={'container-input-name-search'}>
                             <p className={'text-labels'}> name of the card:</p>
-                            <input id={'input-name-search'} type={'text'} placeholder={'card name...'}/>
+                            <input id={'input-name-search'} type={'text'} placeholder={'card name...'} name={'name'} onChange={handleChange}/>
                         </div>
 
                         <div id={'container-input-type-search'}>
@@ -115,6 +128,21 @@ export default function Home() {
                         </div>
 
                     </form>
+
+                </div>
+
+                <div id={'main-container-search-results'}>
+                    <div id={'result-container'}>
+                        {found && <img id={'image-card'} src={image} alt={'image received'}/>}
+                    </div>
+                    <div id={'result-data-container'}>
+                        {found && <div>
+                            <p> {name}  </p>
+                            <p> {type}  </p>
+                            <img id={'attribute-image'} src={setAttributes(attribute)} />
+                        </div>}
+
+                    </div>
 
                 </div>
             </div>

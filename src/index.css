@@ -226,21 +226,42 @@ button:hover {
     align-items: center;
 }
 
-#button-search {
-    border-radius: 25px;
-    background-color: palegoldenrod;
+#main-container-search-results{
+    width: 1000px;
 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-#no-card-found {
-    width: 200px;
+#result-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #201c24;
+    width: auto;
 }
 
-#card-name-no-existing {
-    color: indianred;
+#result-data-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 40px;
+    background-color: #201c24;
+    width: 500px;
+    height: 400px;
+    color: white;
 }
 
-#name-doesnt-exist {
-    font-family: Verdana, serif;
+#image-card{
+    width: 250px;
 }
 
+#attribute-image{
+    width: 50px;
+}
