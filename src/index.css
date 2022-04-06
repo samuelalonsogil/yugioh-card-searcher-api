@@ -25,8 +25,8 @@ code {
 
 }
 
-#button-search-navbar{
- height: min-content;
+#button-search-navbar {
+    height: min-content;
 }
 
 #container-logo-buttons {
@@ -40,7 +40,7 @@ code {
     flex-direction: row;
 }
 
-#input-name-search{
+#input-name-search {
     width: 200px;
     background-color: #282c34;
     text-decoration: none;
@@ -60,7 +60,7 @@ code {
     background-color: #282c34;
 }
 
-#main-container{
+#main-container {
     display: flex;
     flex-direction: row;
 }
@@ -76,7 +76,7 @@ code {
     padding: 4px;
 }
 
-#container-button-search{
+#container-button-search {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -84,12 +84,12 @@ code {
     margin-bottom: 20px;
 }
 
-#button-search-formulary{
+#button-search-formulary {
     width: 100px;
     background-color: orange;
 }
 
-#selector{
+#selector {
     background-color: #282c34;
     text-decoration: none;
     border-radius: 4px;
@@ -101,13 +101,13 @@ code {
     color: dimgray;
 }
 
-#container-atk-def{
+#container-atk-def {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.atk-def{
+.atk-def {
     width: 50px;
     background-color: #282c34;
     text-decoration: none;
@@ -120,7 +120,7 @@ code {
     color: dimgray;
 }
 
-.text-labels{
+.text-labels {
     color: dimgray;
     margin-bottom: -1px;
 }
@@ -226,7 +226,7 @@ button:hover {
     align-items: center;
 }
 
-#main-container-search-results{
+#main-container-search-results {
     width: 1000px;
 
     display: flex;
@@ -235,7 +235,7 @@ button:hover {
     align-items: center;
 }
 
-#result-container{
+#result-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -245,23 +245,94 @@ button:hover {
     width: auto;
 }
 
-#result-data-container{
+#result-data-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     margin-top: 20px;
     margin-left: 40px;
     background-color: #201c24;
-    width: 500px;
-    height: 400px;
+    width: 40%;
+    height: auto;
+    border-radius: 4px;
     color: white;
 }
 
-#image-card{
+#image-card {
     width: 250px;
 }
 
-#attribute-image{
-    width: 50px;
+#attribute-image {
+    width: 25px;
 }
+
+#description-card {
+    width: 80%;
+    background-color: #282c34;
+    border-radius: 4px;
+}
+
+#lvl-atr {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#levels {
+    width: 25px;
+}
+
+#stars {
+    margin-right: 20px;
+}
+
+#result-data {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+#race-img {
+    width: 25px;
+    margin-left: 20px;
+}
+
+#name-result-card {
+    margin-bottom: -1px;
+}
+
+#atk-def-results {
+
+}
+
+#card-sets-results{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    align-items: center;
+    margin-top: 20px;
+    background-color: #201c24;
+    width: 30%;
+    height: auto;
+    border-radius: 4px;
+    color: white;
+    font-size: small;
+}
+
+#card-prices-results{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+
+    align-items: center;
+    margin-top: 20px;
+    background-color: #201c24;
+    width: 30%;
+    height: auto;
+    border-radius: 4px;
+    color: white;
+    font-size: small;
+}
+
+
