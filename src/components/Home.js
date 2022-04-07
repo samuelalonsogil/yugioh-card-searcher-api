@@ -1,15 +1,15 @@
 import {useState} from "react";
 import sadyugi from './raw/Yu-Gi-Oh-Sad-2.jpg';
-import spell from './raw/spell-yugi.png';
-import trap from './raw/trap-yugi.png';
-import dark from './raw/dark-yugi.png';
-import light from './raw/light-yugi.png';
-import wind from './raw/wind-yugi.png';
-import fire from './raw/fire-yugi.png';
-import earth from './raw/earth-yugi.png';
-import water from './raw/water-yugi.png';
-import divine from './raw/divine-yugi.png';
-import star from './raw/star-yugi.png';
+import spell from './raw/attributes/spell-yugi.png';
+import trap from './raw/attributes/trap-yugi.png';
+import dark from './raw/attributes/dark-yugi.png';
+import light from './raw/attributes/light-yugi.png';
+import wind from './raw/attributes/wind-yugi.png';
+import fire from './raw/attributes/fire-yugi.png';
+import earth from './raw/attributes/earth-yugi.png';
+import water from './raw/attributes/water-yugi.png';
+import divine from './raw/attributes/divine-yugi.png';
+import star from './raw/attributes/star-yugi.png';
 import aqua from './raw/races/aqua-yugi.png';
 import beastWarrior from './raw/races/beast-warrior-yugi.png';
 import beast from './raw/races/beast-yugi.png';
@@ -35,6 +35,15 @@ import warrior from './raw/races/warrior.png';
 import wingedBeast from './raw/races/winged-beast.png';
 import wyrm from './raw/races/wyrm.png';
 import zombie from './raw/races/zombie.png';
+import continuousSpell from './raw/spell-trap-types/continuous-spell.png';
+import continuousTrap from './raw/spell-trap-types/continuous-trap.png';
+import counterTrap from './raw/spell-trap-types/counter-trap.png';
+import equipSpell from './raw/spell-trap-types/equip-spell.png';
+import fieldSpell from './raw/spell-trap-types/field-spell.png';
+import normalSpell from './raw/spell-trap-types/normal-spell.png';
+import normalTrap from './raw/spell-trap-types/normal-trap.png';
+import quickPlay from './raw/spell-trap-types/quick-play-spell.png';
+import ritualSpell from './raw/spell-trap-types/ritual-spell.png';
 
 
 function setRaceImages(race){
@@ -64,6 +73,7 @@ function setRaceImages(race){
     else if (race === 'Wyrm') return wyrm;
     else if (race === 'Zombie') return zombie;
 
+
 }
 
 function setAttributes(attribute) {
@@ -77,6 +87,30 @@ function setAttributes(attribute) {
     else if (attribute === 'EARTH') return earth;
     else if (attribute === 'DIVINE') return divine;
 }
+
+async function allTypes(){
+
+    const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php`;
+    const req = await fetch(url);
+    const data = await req.json();
+    let arrayAux = [];
+
+    let  getAllTypes = () => data.data.map(e => {
+        return {
+                type: e.type
+            }
+        });
+
+    getAllTypes().filter( (e) => {
+        arrayAux.includes(e.type) ? console.log('already inside') : arrayAux.push(e.type) ;
+        return arrayAux;
+        });
+
+    console.log(getAllTypes(data.data) );
+    console.log(arrayAux);
+    return arrayAux;
+
+    }
 
 export default function Home() {
     const [name, setName] = useState('');
@@ -103,6 +137,8 @@ export default function Home() {
             const data = await req.json();
 
             console.log(data.data[0].name);
+
+            console.log(allTypes());
 
             let cardName = data.data[0].name;
             let cardType = data.data[0].type;
@@ -230,7 +266,7 @@ export default function Home() {
                             <div id={'lvl-atr'}>
                                 <div id={'stars'}> <img id={'levels'} src={star} alt={'level'}/> <span>x</span> {level}</div>
                                 <div id={'atr'}> <img id={'attribute-image'} src={setAttributes(attribute)} alt={'image-attribute'}/> </div>
-                                <div id={'race'}> <img id={'race-img'} alt={'race'} src={setRaceImages(race)}/> <span>[{race}</span><span>{type==='/Effect Monster'? type : ''}]</span></div>
+                                <div id={'race'}> <img id={'race-img'} alt={'race'} src={setRaceImages(race)}/> <span>[{race}</span><span>{type==='Normal Monster'? '' : '/'+ type}]</span></div>
                             </div>
                             <div id={'description-card'}>
                                 <blockquote>
@@ -259,29 +295,35 @@ export default function Home() {
 
 
 
-            {found && <div id={'card-sets-results'}>
-                <h3>Card sets:</h3>
-                {cardSets.map(function(d, idx){
-                    return (<div key={idx} id={'card-sets-list'}>
-                        <li>{d.set_name }</li>
-                        <p>code: {d.set_code}</p>
-                        <p>rarity: {d.set_rarity} </p>
-                        <p>price: {d.set_price}</p>
-                    </div>)
-                })}
-            </div>}
+            {found && <div id={'card-sets-prices-container'}>
+                <div id={'card-sets-results'}>
+                    <h3>Card sets:</h3>
+                    {cardSets.map(function(d, idx){
+                        return (<div key={idx} id={'card-sets-list'}>
+                            <li>{d.set_name }</li>
+                            <p>code: {d.set_code}</p>
+                            <p>rarity: {d.set_rarity} </p>
+                            <p>price: {d.set_price}</p>
+                        </div>)
+                    })}
+                </div>
 
 
-            {found && <div id={'card-prices-results'}>
-                <h3>Card prices:</h3>
-                {cardPrices.map(function(d, idx){
-                    return (<div key={idx} id={'card-prices-list'}>
-                        <li>{d.cardmarket_price }</li>
-                        <li>{d.tcgplayer_price}</li>
-                        <li>{d.amazon_price} </li>
-                        <li>coolstufffinc: {d.coolstuffinc_price}</li>
-                    </div>)
-                })}
+                <div id={'card-prices-results'}>
+                    <h3>Card prices:</h3>
+                    {cardPrices.map(function(d, idx){
+                        return (<div key={idx} id={'card-prices-list'}>
+                            <li> <a href={`https://www.cardmarket.com/es/YuGiOh/Products/Search?searchString=${name}`}  target={'_blank'}> <span>CardMarket</span></a> : {d.cardmarket_price } </li>
+                            <li> <a href={`https://www.tcgplayer.com/search/all/product?q=${name}&view=grid`}  target={'_blank'}> <span>TCG</span></a> :  {d.tcgplayer_price} </li>
+                            <li> <a href={`https://www.amazon.es/s?k=${name}+card&__mk_es_ES=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=2ITV8PVFC3948&sprefix=${name}+card%2Caps%2C68&ref=nb_sb_noss`}  target={'_blank'}> <span>Amazon</span></a> :  {d.amazon_price}  </li>
+                            <li><a href={`https://www.coolstuffinc.com/main_search.php?pa=searchOnName&page=1&resultsPerPage=25&q=${name}`}  target={'_blank'}> <span>CoolStuffInc</span></a> :  {d.coolstuffinc_price}</li>
+
+                            <br/>
+
+                        </div>)
+                    })}
+                </div>
+
             </div>}
         </>
     )

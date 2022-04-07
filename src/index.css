@@ -13,6 +13,17 @@ code {
     monospace;
 }
 
+a{
+    color: white;
+}
+a:visited{
+    color: indianred;
+}
+
+a:hover {
+    color: red;
+}
+
 #navbar {
     display: flex;
     flex-direction: row;
@@ -63,6 +74,7 @@ code {
 #main-container {
     display: flex;
     flex-direction: row;
+    justify-content: space-evenly;
 }
 
 #main-container-searcher {
@@ -200,7 +212,6 @@ button:hover {
 #container-results {
     display: flex;
     flex-direction: column;
-    margin-left: 60px;
     justify-content: center;
 }
 
@@ -275,6 +286,7 @@ button:hover {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 #levels {
@@ -323,16 +335,23 @@ button:hover {
 #card-prices-results{
     display: flex;
     flex-direction: column;
-    align-self: center;
+    align-self: flex-start;
 
     align-items: center;
     margin-top: 20px;
     background-color: #201c24;
-    width: 30%;
+    width: 20%;
     height: auto;
     border-radius: 4px;
     color: white;
-    font-size: small;
+    font-size: medium;
+    margin-left: -220px;
+}
+
+#card-sets-prices-container{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
 }
 
 
