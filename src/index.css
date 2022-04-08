@@ -82,7 +82,7 @@ a:hover {
     flex-direction: column;
     justify-content: center;
     width: 350px;
-    height: 80%;
+    height: auto;
     background-color: #201c24;
     border-radius: 4px;
     padding: 4px;
