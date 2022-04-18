@@ -97,6 +97,7 @@ function setAttributes(attribute) {
 
 }
 
+
 export default function Home() {
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
@@ -111,11 +112,12 @@ export default function Home() {
     const [cardSets, setCardsets] = useState([]);
     const [cardPrices, setCardPrices] = useState([]);
     const [isMagicTrap, setIsMagicTrap] = useState(false);
-    const [promiseArray, setPromiseArray] = useState([]);
+    const [promiseArray, setTypeArray] = useState([]);
     const [levelArray, setLevelArray] = useState([]);
     const [attributeArray, setAttributeArray] = useState([]);
     const [raceArray, setRaceArray] = useState([]);
     const [nameIntroduced, setNameIntroduced] = useState(false);
+    const [multipleResults, setMultipleResults] = useState(false);
 
 
     useEffect(() => {
@@ -135,7 +137,7 @@ export default function Home() {
                 if (!arrayAux.includes(e.type)) arrayAux.push(e.type);
                 return arrayAux;
             });
-            setPromiseArray(arrayAux.map(e => {
+            setTypeArray(arrayAux.map(e => {
                 return {
                     value: e, label: e
                 }
@@ -197,60 +199,112 @@ export default function Home() {
         apiCall().then();
     }, []);
 
-    let handleSubmit = async e => {
-        e.preventDefault();
-
-        try {
-            const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${name}`;
-            const req = await fetch(url);
-            const data = await req.json();
-
-            console.log(data.data[0].name);
-
-
-            let cardName = data.data[0].name;
-            let cardType = data.data[0].type;
-            let cardImage = data.data[0].card_images[0].image_url;
-            let attribute = data.data[0].attribute || data.data[0].type;
-            let desc = data.data[0].desc;
-            let lvl = data.data[0].level;
-            let _race = data.data[0].race;
-            let attack = data.data[0].atk;
-            let deffense = data.data[0].def;
-            let cardSet = data.data[0].card_sets;
-            let price = data.data[0].card_prices;
-
-            if (cardName !== null) {
-                setName(cardName);
-                setType(cardType);
-                setImage(cardImage);
-                setAttribute(attribute);
-                setFound(true);
-                setDescription(desc);
-                setLevel(lvl);
-                setRace(_race);
-                setAtk(attack);
-                setDef(deffense);
-                setCardsets(cardSet);
-                setCardPrices(price);
-                if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true)
-                else setIsMagicTrap(false);
-                setNameIntroduced(true);
-            }
-
-        } catch (err) {
-            setImage(sadyugi);
-            console.log(err);
-            setFound(false);
-        }
-
-
-    }
-
     let handleChange = e => {
         const {name, value} = e.target;
         name === 'name' ? setName(value) : alert('error');
     }
+
+     let handleSelectTypeChange =  ({value}) => {
+        console.log('value: ' + value);
+        setType(value);
+
+        async function getByType() {
+            const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=${type}`;
+            const req = await fetch(url);
+            const data = await req.json();
+
+            let getAllByType = () => data.data.map(e => {
+                return {
+                    name: e.name,
+                    type: e.type,
+                    image: e.card_images[0].image_url
+                };
+            });
+
+            console.log(getAllByType());
+
+        }
+
+
+        getByType();
+
+    }
+
+    let handleSubmit = async e => {
+        e.preventDefault();
+
+        if (name != null || name !== '') {
+
+            try {
+                const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${name}`;
+                const req = await fetch(url);
+                const data = await req.json();
+
+                console.log(data.data[0].name);
+
+
+                let cardName = data.data[0].name;
+                let cardType = data.data[0].type;
+                let cardImage = data.data[0].card_images[0].image_url;
+                let attribute = data.data[0].attribute || data.data[0].type;
+                let desc = data.data[0].desc;
+                let lvl = data.data[0].level;
+                let _race = data.data[0].race;
+                let attack = data.data[0].atk;
+                let deffense = data.data[0].def;
+                let cardSet = data.data[0].card_sets;
+                let price = data.data[0].card_prices;
+
+                if (cardName !== null) {
+                    setName(cardName);
+                    setType(cardType);
+                    setImage(cardImage);
+                    setAttribute(attribute);
+                    setFound(true);
+                    setDescription(desc);
+                    setLevel(lvl);
+                    setRace(_race);
+                    setAtk(attack);
+                    setDef(deffense);
+                    setCardsets(cardSet);
+                    setCardPrices(price);
+                    if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true)
+                    else setIsMagicTrap(false);
+                    setNameIntroduced(true);
+                } else {
+                    setMultipleResults(true);
+                }
+
+
+            } catch (err) {
+                console.log(err);
+                setFound(false);
+            }
+        }else if (type!=null){
+            try{
+
+                const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=${type}`;
+                const req = await fetch(url);
+                const data = await req.json();
+
+                let getAllByType = () => data.data.map(e => {
+                    return {
+                        name: e.name,
+                        type: e.type,
+                        image: e.card_images[0].image_url
+                    };
+                });
+
+                console.log(getAllByType());
+
+
+            }catch (err){
+                console.log(err);
+                setFound(false);
+            }
+        }
+    }
+
 
     return (
         <>
@@ -267,7 +321,9 @@ export default function Home() {
                         <div id={'container-input-type-search'}>
                             <p className={'text-labels'}> type:</p>
 
-                            <Select placeholder={'select type...'} options={promiseArray}/>
+                            <Select placeholder={'select type...'} options={promiseArray}
+                                    onChange={handleSelectTypeChange}
+                            />
 
                         </div>
 
@@ -311,6 +367,15 @@ export default function Home() {
                 </div>
 
                 <div id={'main-container-search-results'}>
+                    {found && multipleResults && nameIntroduced === false && <div id={'multiple-results-container'}>
+
+                        <div id={'multiple-results'}>
+                            <div id={'multiple-cards'}>
+                                {<img src={image} alt={'multiple-images'}/>}
+                            </div>
+                        </div>
+
+                    </div>}
                     <div id={'result-container'}>
                         {found && <img id={'image-card'} src={image} alt={'card received'}/>}
                     </div>
@@ -353,7 +418,7 @@ export default function Home() {
             </div>
 
 
-            {found && <div id={'card-sets-prices-container'}>
+            {found && nameIntroduced && <div id={'card-sets-prices-container'}>
                 <div id={'card-sets-results'}>
                     <h3>Card sets:</h3>
                     {cardSets.map(function (d, idx) {
