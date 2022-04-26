@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import sadyugi from './raw/Yu-Gi-Oh-Sad-2.jpg';
 import spell from './raw/attributes/spell-yugi.png';
 import trap from './raw/attributes/trap-yugi.png';
 import dark from './raw/attributes/dark-yugi.png';
@@ -118,13 +117,32 @@ export default function Home() {
     const [raceArray, setRaceArray] = useState([]);
     const [nameIntroduced, setNameIntroduced] = useState(false);
     const [multipleResults, setMultipleResults] = useState(false);
-
+    const [completeArrayCards, setCompleteArrayCards] = useState([]);
 
     useEffect(() => {
         async function apiCall() {
             const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php`;
             const req = await fetch(url);
             const data = await req.json();
+
+            /*get all cards*/
+            let getAllCards = () => data.data.map(e => {
+                return {
+                    name:e.name,
+                    type: e.type,
+                    desc:e.desc,
+                    atk:e.atk,
+                    def:e.def,
+                    level:e.level,
+                    race:e.race,
+                    attribute:e.attribute,
+                    archetype:e.archetype,
+                    card_sets:e.card_sets,
+                    image:e.card_images[0],
+                    card_prices:e.card_prices[0]
+                }
+            });
+            setCompleteArrayCards(getAllCards);
 
             /*get types*/
             let arrayAux = [];
@@ -141,6 +159,7 @@ export default function Home() {
                 return {
                     value: e, label: e
                 }
+
             }).sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0)));
 
             /*get attributes*/
@@ -184,8 +203,15 @@ export default function Home() {
                     race: e.race
                 };
             });
+
+            /*let arrayCorrectRaces = [ 'Continuous', 'Zombie', 'Fiend', 'Normal', 'Quick-Play', 'rock', 'warrior',
+                'winged beast', 'spellcaster', 'beast', 'fairy', 'equip', 'field', 'fish', 'beast-warrior', 'thunder',
+                'machine', 'sea serpent', 'aqua', 'plant', 'dragon', 'reptile', 'counter', 'psychic', 'insect', 'pyro',
+                'dinosaur', 'wyrm', 'cyberse', 'ritual', 'divine-beast', 'creator-god', 'cyverse', 'mai', 'pegasus',
+                'ishizu', 'joey', 'kaiba' ,'yugi' ]*/
+
             getAllRaces().filter((e) => {
-                if (!arrayRacesAux.includes(e.race)) arrayRacesAux.push(e.race);
+                if (!arrayRacesAux.includes(e.race) ) arrayRacesAux.push(e.race);
                 return arrayRacesAux;
             });
             setRaceArray(arrayRacesAux.map(e => {
@@ -193,6 +219,7 @@ export default function Home() {
                     value: e, label: e
                 }
             }).sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0)));
+
 
         }
 
@@ -236,16 +263,18 @@ export default function Home() {
         if (name != null || name !== '') {
 
             try {
-                const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${name}`;
+                /*const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${name}`;
                 const req = await fetch(url);
-                const data = await req.json();
+                const data = await req.json();*/
 
-                console.log(data.data[0].name);
+                let cardFound = completeArrayCards.filter((e) => completeArrayCards[0].name === e.name ? e : console.log('nothing found'));
 
+                console.log(cardFound);
+                console.log(cardFound.name);
 
-                let cardName = data.data[0].name;
-                let cardType = data.data[0].type;
-                let cardImage = data.data[0].card_images[0].image_url;
+                let cardName = cardFound.name;
+                let cardType = cardFound.type;
+                let cardImage = cardFound.card_images[0].image_url;
                 let attribute = data.data[0].attribute || data.data[0].type;
                 let desc = data.data[0].desc;
                 let lvl = data.data[0].level;
