@@ -118,6 +118,7 @@ export default function Home() {
     const [nameIntroduced, setNameIntroduced] = useState(false);
     const [multipleResults, setMultipleResults] = useState(false);
     const [completeArrayCards, setCompleteArrayCards] = useState([]);
+    const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
 
     useEffect(() => {
         async function apiCall() {
@@ -261,42 +262,37 @@ export default function Home() {
         e.preventDefault();
 
         if (name != null || name !== '') {
-
             try {
-                /*const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?name=${name}`;
-                const req = await fetch(url);
-                const data = await req.json();*/
+                let cardFound = completeArrayCards.filter( (e) => e.name.toLowerCase()===name.toLowerCase());
+                setCardFoundIndividual(cardFound);
+                /*console.log('Card Found: ' + cardFound[0].name);
+                console.log('Card Found Individual: ' + cardFoundIndividual[0].name);*/
 
-                let cardFound = completeArrayCards.filter((e) => completeArrayCards[0].name === e.name ? e : console.log('nothing found'));
+                //console.log(cardFound[0].name + '\n' + cardFound[0].type+ '\n' + cardFound[0].image.image_url);
 
-                console.log(cardFound);
-                console.log(cardFound.name);
 
-                let cardName = cardFound.name;
-                let cardType = cardFound.type;
-                let cardImage = cardFound.card_images[0].image_url;
-                let attribute = data.data[0].attribute || data.data[0].type;
-                let desc = data.data[0].desc;
-                let lvl = data.data[0].level;
-                let _race = data.data[0].race;
-                let attack = data.data[0].atk;
-                let deffense = data.data[0].def;
-                let cardSet = data.data[0].card_sets;
-                let price = data.data[0].card_prices;
+                let arrayImages = Object.keys(cardFound[0].image)
+                    .map(function(key) {
+                        return cardFound[0].image[key];
+                    });
 
-                if (cardName !== null) {
-                    setName(cardName);
-                    setType(cardType);
-                    setImage(cardImage);
-                    setAttribute(attribute);
+                if (cardFound[0].name !== null) {
                     setFound(true);
-                    setDescription(desc);
-                    setLevel(lvl);
-                    setRace(_race);
-                    setAtk(attack);
-                    setDef(deffense);
-                    setCardsets(cardSet);
-                    setCardPrices(price);
+                    setName(cardFound[0].name);
+                    setType(cardFound[0].type);
+                    setImage(arrayImages[1]);
+                    setAttribute(cardFound[0].attribute || cardFound[0].type);
+                    setDescription(cardFound[0].desc);
+                    setLevel(cardFound[0].level);
+                    setRace(cardFound[0].race);
+                    setAtk(cardFound[0].atk);
+                    setDef(cardFound[0].def);
+                    setCardsets(cardFound[0].card_sets);
+                    setCardPrices(Object.keys(cardFound[0].card_prices)
+                        .map(function(key) {
+                            return cardFound[0].card_prices[key];
+                        }));
+
                     if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true)
                     else setIsMagicTrap(false);
                     setNameIntroduced(true);
@@ -309,22 +305,23 @@ export default function Home() {
                 console.log(err);
                 setFound(false);
             }
-        }else if (type!=null){
+        }else if ( name==null && type!=null){
             try{
 
-                const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=${type}`;
-                const req = await fetch(url);
-                const data = await req.json();
+                let cardsFound = completeArrayCards.filter( (e) => e.type===type );
+                console.log(cardsFound);
+                console.log(cardsFound[0].name + '\n' + cardsFound[0].type+ '\n' + cardsFound[0].image.image_url);
 
-                let getAllByType = () => data.data.map(e => {
+                /*let getAllByType = () => data.data.map(e => {
                     return {
                         name: e.name,
                         type: e.type,
                         image: e.card_images[0].image_url
                     };
-                });
+                    console.log(getAllByType());
+                });*/
 
-                console.log(getAllByType());
+
 
 
             }catch (err){
@@ -410,15 +407,15 @@ export default function Home() {
                     </div>
                     <div id={'result-data-container'}>
                         {found && nameIntroduced && <div id={'result-data'}>
-                            <p id={'name-result-card'}> {name}  </p>
-                            <p> {type}  </p>
+                            <p id={'name-result-card'}> {cardFoundIndividual[0].name}  </p>
+                            <p> {cardFoundIndividual[0].type}  </p>
                             <div id={'lvl-atr'}>
-                                <div id={'stars'}><img id={'levels'} src={star} alt={'level'}/> <span>x</span> {level}
+                                <div id={'stars'}><img id={'levels'} src={star} alt={'level'}/> <span>x</span> {cardFoundIndividual[0].level}
                                 </div>
                                 <div id={'atr'}><img id={'attribute-image'} src={setAttributes(attribute)}
                                                      alt={'type-attribute'}/></div>
                                 <div id={'race'}><img id={'race-img'} alt={'race'} src={setRaceImages(race)}/>
-                                    <span>[{race}</span><span>{type === 'Normal Monster' ? '' : '/' + type}]</span>
+                                    <span>[{cardFoundIndividual[0].race}</span><span>{type === 'Normal Monster' ? '' : '/' + cardFoundIndividual[0].type}]</span>
                                 </div>
                             </div>
                             <div id={'description-card'}>
