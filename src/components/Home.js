@@ -96,7 +96,6 @@ function setAttributes(attribute) {
 
 }
 
-
 export default function Home() {
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
@@ -129,18 +128,18 @@ export default function Home() {
             /*get all cards*/
             let getAllCards = () => data.data.map(e => {
                 return {
-                    name:e.name,
+                    name: e.name,
                     type: e.type,
-                    desc:e.desc,
-                    atk:e.atk,
-                    def:e.def,
-                    level:e.level,
-                    race:e.race,
-                    attribute:e.attribute,
-                    archetype:e.archetype,
-                    card_sets:e.card_sets,
-                    image:e.card_images[0],
-                    card_prices:e.card_prices[0]
+                    desc: e.desc,
+                    atk: e.atk,
+                    def: e.def,
+                    level: e.level,
+                    race: e.race,
+                    attribute: e.attribute,
+                    archetype: e.archetype,
+                    card_sets: e.card_sets,
+                    image: e.card_images[0],
+                    card_prices: e.card_prices[0]
                 }
             });
             setCompleteArrayCards(getAllCards);
@@ -205,14 +204,8 @@ export default function Home() {
                 };
             });
 
-            /*let arrayCorrectRaces = [ 'Continuous', 'Zombie', 'Fiend', 'Normal', 'Quick-Play', 'rock', 'warrior',
-                'winged beast', 'spellcaster', 'beast', 'fairy', 'equip', 'field', 'fish', 'beast-warrior', 'thunder',
-                'machine', 'sea serpent', 'aqua', 'plant', 'dragon', 'reptile', 'counter', 'psychic', 'insect', 'pyro',
-                'dinosaur', 'wyrm', 'cyberse', 'ritual', 'divine-beast', 'creator-god', 'cyverse', 'mai', 'pegasus',
-                'ishizu', 'joey', 'kaiba' ,'yugi' ]*/
-
             getAllRaces().filter((e) => {
-                if (!arrayRacesAux.includes(e.race) ) arrayRacesAux.push(e.race);
+                if (!arrayRacesAux.includes(e.race)) arrayRacesAux.push(e.race);
                 return arrayRacesAux;
             });
             setRaceArray(arrayRacesAux.map(e => {
@@ -221,31 +214,34 @@ export default function Home() {
                 }
             }).sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0)));
 
-
         }
 
         apiCall().then();
     }, []);
 
+    /*handleChange name*/
     let handleChange = e => {
         const {name, value} = e.target;
         name === 'name' ? setName(value) : alert('error');
     }
 
-     let handleSelectTypeChange =  ({value}) => {
-        console.log('value: ' + value);
+    /*handleChange type*/
+    let handleSelectTypeChange = ({value}) => {
         setType(value);
+        console.log('value: ' + value);
 
         async function getByType() {
-            const url = `https://db.ygoprodeck.com/api/v7/cardinfo.php?type=${type}`;
-            const req = await fetch(url);
-            const data = await req.json();
 
-            let getAllByType = () => data.data.map(e => {
+            let cardTypeFound = completeArrayCards.filter((e) => e.type === value);
+            let arrayImages = Object.keys(cardTypeFound[0].image)
+                .map(function (key) {
+                    return cardTypeFound[0].image[key];
+                });
+            let getAllByType = () => cardTypeFound.map(e => {
                 return {
                     name: e.name,
                     type: e.type,
-                    image: e.card_images[0].image_url
+                    image: arrayImages[1]
                 };
             });
 
@@ -253,26 +249,139 @@ export default function Home() {
 
         }
 
-
         getByType();
 
     }
+
+    /*handleChange type*/
+    let handleSelectRaceChange = ({value}) => {
+        setRace(value);
+        console.log('value: ' + value);
+
+        async function getByRace() {
+
+            let cardRaceFound = completeArrayCards.filter((e) => e.race === value);
+            let arrayImages = Object.keys(cardRaceFound[0].image)
+                .map(function (key) {
+                    return cardRaceFound[0].image[key];
+                });
+            let getAllByRace = () => cardRaceFound.map(e => {
+                return {
+                    name: e.name,
+                    race: e.race,
+                    image: arrayImages[1]
+                };
+            });
+
+            console.log(getAllByRace());
+
+        }
+
+        getByRace();
+
+    }
+
+    /*handleChange level*/
+    let handleSelectLevelChange = ({value}) => {
+        setLevel(value);
+        console.log('value: ' + value);
+
+        async function getByLevel() {
+
+            let cardLevelFound = completeArrayCards.filter((e) => e.level === value);
+            let arrayImages = Object.keys(cardLevelFound[0].image)
+                .map(function (key) {
+                    return cardLevelFound[0].image[key];
+                });
+            let getAllByLevel = () => cardLevelFound.map(e => {
+                return {
+                    name: e.name,
+                    level: e.level,
+                    image: arrayImages[1]
+                };
+            });
+
+            console.log(getAllByLevel());
+
+        }
+
+        getByLevel();
+
+    }
+
+    /*handleChange attribute*/
+    let handleSelectAttributeChange = ({value}) => {
+        setAttribute(value);
+        console.log('value: ' + value);
+
+        async function getByAttribute() {
+
+            let cardAttributeFound = completeArrayCards.filter((e) => e.attribute === value);
+            let arrayImages = Object.keys(cardAttributeFound[0].image)
+                .map(function (key) {
+                    return cardAttributeFound[0].image[key];
+                });
+            let getAllByAttribute = () => cardAttributeFound.map(e => {
+                return {
+                    name: e.name,
+                    attribute: e.attribute,
+                    image: arrayImages[1]
+                };
+            });
+
+            console.log(getAllByAttribute());
+
+        }
+
+        getByAttribute();
+
+    }
+
+    /*handleChange atk*/
+    let handleSelectAtkChange = e => {
+        const {atk, value} = e.target;
+        atk === 'atk' ? setAtk(value) : alert('error');
+    }
+
+
+
+    /*let handleSelectAtkChange = ({value}) => {
+        setAtk(value);
+        console.log('value: ' + value);
+
+        async function getByAtk() {
+
+            let cardAtkFound = completeArrayCards.filter((e) => e.atk === value);
+            let arrayImages = Object.keys(cardAtkFound[0].image)
+                .map(function (key) {
+                    return cardAtkFound[0].image[key];
+                });
+            let getAllByAtk = () => cardAtkFound.map(e => {
+                return {
+                    name: e.name,
+                    attribute: e.attribute,
+                    image: arrayImages[1],
+                    atk:e.atk
+                };
+            });
+
+            console.log(getAllByAtk());
+
+        }
+
+        getByAtk();
+
+    }*/
 
     let handleSubmit = async e => {
         e.preventDefault();
 
         if (name != null || name !== '') {
             try {
-                let cardFound = completeArrayCards.filter( (e) => e.name.toLowerCase()===name.toLowerCase());
+                let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
                 setCardFoundIndividual(cardFound);
-                /*console.log('Card Found: ' + cardFound[0].name);
-                console.log('Card Found Individual: ' + cardFoundIndividual[0].name);*/
-
-                //console.log(cardFound[0].name + '\n' + cardFound[0].type+ '\n' + cardFound[0].image.image_url);
-
-
                 let arrayImages = Object.keys(cardFound[0].image)
-                    .map(function(key) {
+                    .map(function (key) {
                         return cardFound[0].image[key];
                     });
 
@@ -289,7 +398,7 @@ export default function Home() {
                     setDef(cardFound[0].def);
                     setCardsets(cardFound[0].card_sets);
                     setCardPrices(Object.keys(cardFound[0].card_prices)
-                        .map(function(key) {
+                        .map(function (key) {
                             return cardFound[0].card_prices[key];
                         }));
 
@@ -305,12 +414,12 @@ export default function Home() {
                 console.log(err);
                 setFound(false);
             }
-        }else if ( name==null && type!=null){
-            try{
+        } else if (name == null && type != null) {
+            try {
 
-                let cardsFound = completeArrayCards.filter( (e) => e.type===type );
+                let cardsFound = completeArrayCards.filter((e) => e.type === type);
                 console.log(cardsFound);
-                console.log(cardsFound[0].name + '\n' + cardsFound[0].type+ '\n' + cardsFound[0].image.image_url);
+                console.log(cardsFound[0].name + '\n' + cardsFound[0].type + '\n' + cardsFound[0].image.image_url);
 
                 /*let getAllByType = () => data.data.map(e => {
                     return {
@@ -322,9 +431,7 @@ export default function Home() {
                 });*/
 
 
-
-
-            }catch (err){
+            } catch (err) {
                 console.log(err);
                 setFound(false);
             }
@@ -355,18 +462,21 @@ export default function Home() {
 
                         <div id={'container-race-level-search'}>
                             <p className={'text-labels'}> race:</p>
-                            <Select placeholder={'select race...'} options={raceArray}/>
+                            <Select placeholder={'select race...'} options={raceArray}
+                                    onChange={handleSelectRaceChange}/>
 
                         </div>
 
                         <div id={'container-input-level-search'}>
                             <p className={'text-labels'}> level:</p>
-                            <Select placeholder={'select level...'} options={levelArray}/>
+                            <Select placeholder={'select level...'} options={levelArray}
+                                    onChange={handleSelectLevelChange}/>
                         </div>
 
                         <div id={'container-input-attribute-search'}>
                             <p className={'text-labels'}> attribute:</p>
-                            <Select placeholder={'select attribute...'} options={attributeArray}/>
+                            <Select placeholder={'select attribute...'} options={attributeArray}
+                                    onChange={handleSelectAttributeChange}/>
 
                         </div>
 
@@ -374,7 +484,7 @@ export default function Home() {
                             <div id={'container-input-atk-search'}>
                                 <p className={'text-labels'}> atk :</p>
                                 <input id={'input-atk-search'} className={'atk-def'} type={'text'}
-                                       placeholder={'min atk'}/>
+                                       name={'atk'} placeholder={'min atk'} onChange={handleSelectAtkChange}/>
                             </div>
 
                             <div id={'container-input-def-search'}>
@@ -410,11 +520,12 @@ export default function Home() {
                             <p id={'name-result-card'}> {cardFoundIndividual[0].name}  </p>
                             <p> {cardFoundIndividual[0].type}  </p>
                             <div id={'lvl-atr'}>
-                                <div id={'stars'}><img id={'levels'} src={star} alt={'level'}/> <span>x</span> {cardFoundIndividual[0].level}
+                                <div id={'stars'}><img id={'levels'} src={star} alt={'level'}/>
+                                    <span>x</span> {cardFoundIndividual[0].level}
                                 </div>
-                                <div id={'atr'}><img id={'attribute-image'} src={setAttributes(attribute)}
+                                <div id={'atr'}><img id={'attribute-image'} src={setAttributes(cardFoundIndividual[0].attribute)}
                                                      alt={'type-attribute'}/></div>
-                                <div id={'race'}><img id={'race-img'} alt={'race'} src={setRaceImages(race)}/>
+                                <div id={'race'}><img id={'race-img'} alt={'race'} src={setRaceImages(cardFoundIndividual[0].race)}/>
                                     <span>[{cardFoundIndividual[0].race}</span><span>{type === 'Normal Monster' ? '' : '/' + cardFoundIndividual[0].type}]</span>
                                 </div>
                             </div>
