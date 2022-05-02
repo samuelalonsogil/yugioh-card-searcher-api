@@ -97,6 +97,8 @@ function setAttributes(attribute) {
 }
 
 export default function Home() {
+
+    /*basic card attributes*/
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
     const [image, setImage] = useState('');
@@ -110,13 +112,21 @@ export default function Home() {
     const [cardSets, setCardsets] = useState([]);
     const [cardPrices, setCardPrices] = useState([]);
     const [isMagicTrap, setIsMagicTrap] = useState(false);
+
+    /*dynamic array charges */
     const [promiseArray, setTypeArray] = useState([]);
     const [levelArray, setLevelArray] = useState([]);
     const [attributeArray, setAttributeArray] = useState([]);
     const [raceArray, setRaceArray] = useState([]);
+
+    /*checkers*/
     const [nameIntroduced, setNameIntroduced] = useState(false);
     const [multipleResults, setMultipleResults] = useState(false);
+
+    /*charges all the cards in an array*/
     const [completeArrayCards, setCompleteArrayCards] = useState([]);
+
+    /*charges one specified by name card in an array*/
     const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
 
     useEffect(() => {
@@ -378,6 +388,7 @@ export default function Home() {
 
         if (name != null || name !== '') {
             try {
+                setNameIntroduced(true);
                 let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
                 setCardFoundIndividual(cardFound);
                 let arrayImages = Object.keys(cardFound[0].image)
@@ -403,10 +414,6 @@ export default function Home() {
                         }));
 
                     if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true)
-                    else setIsMagicTrap(false);
-                    setNameIntroduced(true);
-                } else {
-                    setMultipleResults(true);
                 }
 
 
@@ -416,20 +423,12 @@ export default function Home() {
             }
         } else if (name == null && type != null) {
             try {
-
+                setMultipleResults(true);
+                setFound(true);
+                setNameIntroduced(false);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type);
-                console.log(cardsFound);
-                console.log(cardsFound[0].name + '\n' + cardsFound[0].type + '\n' + cardsFound[0].image.image_url);
-
-                /*let getAllByType = () => data.data.map(e => {
-                    return {
-                        name: e.name,
-                        type: e.type,
-                        image: e.card_images[0].image_url
-                    };
-                    console.log(getAllByType());
-                });*/
-
+                //console.log(cardsFound);
+                console.log('Multiple found: ' + cardsFound[0].name + '\n' + cardsFound[0].type + '\n' + cardsFound[0].image.image_url);
 
             } catch (err) {
                 console.log(err);
@@ -503,10 +502,11 @@ export default function Home() {
                 </div>
 
                 <div id={'main-container-search-results'}>
-                    {found && multipleResults && nameIntroduced === false && <div id={'multiple-results-container'}>
+                    {multipleResults && nameIntroduced === false && <div id={'multiple-results-container'}>
 
                         <div id={'multiple-results'}>
                             <div id={'multiple-cards'}>
+                                <p>multiple cards</p>
                                 {<img src={image} alt={'multiple-images'}/>}
                             </div>
                         </div>
