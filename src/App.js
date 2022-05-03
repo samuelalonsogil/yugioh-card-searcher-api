@@ -13,7 +13,7 @@ export default function App(){
                 <Navbar/>
                     <Routes>
                         <Route path={'/'} element = {<Home/>} />
-                        <Route path={'randomCard'} element = {<RandomCard/>} />
+                        <Route path={'/randomCard'} element = {<RandomCard/>} />
                     </Routes>
             </div>
         </div>

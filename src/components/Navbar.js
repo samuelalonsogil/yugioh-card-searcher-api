@@ -10,7 +10,7 @@ export default function Navbar() {
                     <button id={'search-card-button'} className={'links'}>Search cards</button>
                 </Link>
                 <Link to='/randomCard' style={{textDecoration: 'none'}}>
-                    <button id={'random-card-button'} className={'links'}>Random card</button>
+                    <button id={'random-card-button'} className={'links'}  >Random card</button>
                 </Link>
             </div>
 

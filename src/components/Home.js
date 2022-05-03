@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import spell from './raw/attributes/spell-yugi.png';
 import trap from './raw/attributes/trap-yugi.png';
 import dark from './raw/attributes/dark-yugi.png';
