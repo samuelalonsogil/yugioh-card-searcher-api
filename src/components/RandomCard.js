@@ -111,6 +111,7 @@ export default function RandomCard() {
     const [cardSets, setCardsets] = useState([]);
     const [cardPrices, setCardPrices] = useState([]);
     const [isMagicTrap, setIsMagicTrap] = useState(false);
+    const [liked, setLiked] = useState(false);
     const url = `https://db.ygoprodeck.com/api/v7/randomcard.php`;
 
     useEffect(() => {
@@ -171,6 +172,10 @@ export default function RandomCard() {
 
                             <div id={'atk-def-results'}>
                                 {!isMagicTrap && <span id={'atk-results'}> ATK/ {atk} DEF/ {def}</span>}
+
+
+                                    <button id={'like'} onClick={() =>setLiked(true)}> corazon </button>
+
                                 <br/>
                                 <br/>
                                 <br/>
