@@ -44,7 +44,7 @@ import normalTrap from './raw/spell-trap-types/normal-trap.png';
 import quickPlay from './raw/spell-trap-types/quick-play-spell.png';
 import ritualSpell from './raw/spell-trap-types/ritual-spell.png';
 import Select from 'react-select';
-
+import LikeButton from "./LikeButton";
 function setRaceImages(race) {
     if (race === 'Aqua') return aqua;
     else if (race === 'Beast-Warrior') return beastWarrior;
@@ -109,6 +109,7 @@ export default function Home() {
     const [race, setRace] = useState('');
     const [atk, setAtk] = useState('');
     const [def, setDef] = useState('');
+    const [archetype, setArchetype] = useState('');
     const [cardSets, setCardsets] = useState([]);
     const [cardPrices, setCardPrices] = useState([]);
     const [isMagicTrap, setIsMagicTrap] = useState(false);
@@ -128,6 +129,8 @@ export default function Home() {
 
     /*charges one specified by name card in an array*/
     const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
+    const [like, setLike] = useState(false);
+
 
     useEffect(() => {
         async function apiCall() {
@@ -353,36 +356,6 @@ export default function Home() {
         atk === 'atk' ? setAtk(value) : alert('error');
     }
 
-
-
-    /*let handleSelectAtkChange = ({value}) => {
-        setAtk(value);
-        console.log('value: ' + value);
-
-        async function getByAtk() {
-
-            let cardAtkFound = completeArrayCards.filter((e) => e.atk === value);
-            let arrayImages = Object.keys(cardAtkFound[0].image)
-                .map(function (key) {
-                    return cardAtkFound[0].image[key];
-                });
-            let getAllByAtk = () => cardAtkFound.map(e => {
-                return {
-                    name: e.name,
-                    attribute: e.attribute,
-                    image: arrayImages[1],
-                    atk:e.atk
-                };
-            });
-
-            console.log(getAllByAtk());
-
-        }
-
-        getByAtk();
-
-    }*/
-
     let handleSubmit = async e => {
         e.preventDefault();
 
@@ -407,6 +380,7 @@ export default function Home() {
                     setRace(cardFound[0].race);
                     setAtk(cardFound[0].atk);
                     setDef(cardFound[0].def);
+                    setArchetype(archetype);
                     setCardsets(cardFound[0].card_sets);
                     setCardPrices(Object.keys(cardFound[0].card_prices)
                         .map(function (key) {
@@ -437,6 +411,33 @@ export default function Home() {
         }
     }
 
+    let handleSubmitLike = async (e) =>{
+        e.preventDefault();
+        console.log(name);
+        const rawResponse = await fetch( 'http://localhost:3001/cards/', {
+            method: 'POST',
+            headers: {
+                'Accept':'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify( {
+                name:name,
+                type:type,
+                desc:description,
+                atk:atk,def:def,
+                level:level,
+                race:race,
+                attribute:attribute,
+                archetype:archetype,
+                card_sets:cardSets,
+                image:image,
+                card_prices:cardPrices
+            } )
+        } );
+
+        const content = await rawResponse.json();
+        console.log(content);
+    }
 
     return (
         <>
@@ -539,6 +540,9 @@ export default function Home() {
 
                             <div id={'atk-def-results'}>
                                 {!isMagicTrap && <span id={'atk-results'}> ATK/ {atk} DEF/ {def}</span>}
+                                <button onClick={ () => console.log(name) } onSubmit={handleSubmitLike} id={'card-liked'}>heart</button>
+                                <div>
+                                </div>
                                 <br/>
                                 <br/>
                                 <br/>
