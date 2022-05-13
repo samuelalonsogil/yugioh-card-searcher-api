@@ -318,89 +318,114 @@ export default function Home() {
         }
     }
 
-    let handleSubmitLike = async (e) =>{
+    let handleSubmitLike = async (e) => {
         e.preventDefault();
         console.log(name);
-        const rawResponse = await fetch( 'http://localhost:3001/cards/', {
+        const rawResponse = await fetch('http://localhost:3001/cards/', {
             method: 'POST',
             headers: {
-                'Accept':'application/json',
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify( {
-                name:name,
-                type:type,
-                desc:description,
-                atk:atk,def:def,
-                level:level,
-                race:race,
-                attribute:attribute,
-                archetype:archetype,
-                card_sets:cardSets,
-                image:image,
-                card_prices:cardPrices
-            } )
-        } );
+            body: JSON.stringify({
+                name: name,
+                type: type,
+                desc: description,
+                atk: atk, def: def,
+                level: level,
+                race: race,
+                attribute: attribute,
+                archetype: archetype,
+                card_sets: cardSets,
+                image: image,
+                card_prices: cardPrices
+            })
+        });
 
         const content = await rawResponse.json();
         console.log(content);
     }
-
+    let placeholder = '';
     return (
         <>
             <div id={'main-container'}>
-                <div id={'main-container-searcher'}>
 
-                    <form onSubmit={handleSubmit}>
-                        <div id={'container-input-name-search'}>
-                            <p className={'text-labels'}> name:</p>
-                            <input id={'input-name-search'} type={'text'} placeholder={'card name...'} name={'name'}
-                                   onChange={handleChange}/>
-                        </div>
+                <div id={'searcher'}>
 
-                        <div id={'container-input-type-search'}>
-                            <p className={'text-labels'}> type:</p>
-                           <Selector options = {promiseArray} onChange = {handleSelectTypeChange} />
+                    <div id={'name-container-searcher'}>
+                        <form onSubmit={handleSubmit}>
 
-                        </div>
-
-                        <div id={'container-race-level-search'}>
-                            <p className={'text-labels'}> race:</p>
-                            <Selector options = {raceArray} onChange = {handleSelectRaceChange} />
-
-                        </div>
-
-                        <div id={'container-input-level-search'}>
-                            <p className={'text-labels'}> level:</p>
-                            <Selector options = {levelArray} onChange = {handleSelectLevelChange} />
-                        </div>
-
-                        <div id={'container-input-attribute-search'}>
-                            <p className={'text-labels'}> attribute:</p>
-                            <Selector options = {attributeArray} onChange = {handleSelectAttributeChange} />
-                        </div>
-
-                        <div id={'container-atk-def'}>
-                            <div id={'container-input-atk-search'}>
-                                <p className={'text-labels'}> atk :</p>
-                                <input id={'input-atk-search'} className={'atk-def'} type={'text'}
-                                       name={'atk'} placeholder={'min atk'} onChange={handleSelectAtkChange}/>
+                            <div id={'container-input-name-search'}>
+                                <p className={'text-labels'}> name:</p>
+                                <input id={'input-name-search'} type={'text'} placeholder={'card name...'} name={'name'}
+                                       onChange={handleChange}/>
                             </div>
 
-                            <div id={'container-input-def-search'}>
-                                <p className={'text-labels'}> def :</p>
-                                <input id={'input-def-search'} className={'atk-def'} type={'text'}
-                                       placeholder={'min def'}/>
+                            <div id={'container-button-search-name'}>
+                                <input id={'button-multiple-formulary'} className={'links'} type={'submit'}
+                                       value={'search by name'}/>
                             </div>
-                        </div>
 
-                        <div id={'container-button-search'}>
-                            <input id={'button-search-formulary'} className={'links'} type={'submit'} value={'search'}/>
-                        </div>
 
-                    </form>
+                        </form>
+                    </div>
+
+
+                    <div id={'main-container-searcher'}>
+                        <form onSubmit={handleSubmit}>
+
+                            <div id={'container-input-type-search'}>
+                                <p className={'text-labels'}> type:</p>
+                                <Selector placeholder={placeholder = 'select type'} options={promiseArray}
+                                          onChange={handleSelectTypeChange}/>
+
+                            </div>
+
+                            <div id={'container-race-level-search'}>
+                                <p className={'text-labels'}> race:</p>
+                                <Selector placeholder={placeholder = 'select race'} options={raceArray}
+                                          onChange={handleSelectRaceChange}/>
+
+                            </div>
+
+                            <div id={'container-input-level-search'}>
+                                <p className={'text-labels'}> level:</p>
+                                <Selector placeholder={placeholder = 'select level'} options={levelArray}
+                                          onChange={handleSelectLevelChange}/>
+                            </div>
+
+                            <div id={'container-input-attribute-search'}>
+                                <p className={'text-labels'}> attribute:</p>
+                                <Selector placeholder={placeholder = 'select attribute'} options={attributeArray}
+                                          onChange={handleSelectAttributeChange}/>
+                            </div>
+
+                            <div id={'container-atk-def'}>
+                                <div id={'container-input-atk-search'}>
+                                    <p className={'text-labels'}> atk :</p>
+                                    <input id={'input-atk-search'} className={'atk-def'} type={'text'}
+                                           name={'atk'} placeholder={'min atk'} onChange={handleSelectAtkChange}/>
+                                </div>
+
+                                <div id={'container-input-def-search'}>
+                                    <p className={'text-labels'}> def :</p>
+                                    <input id={'input-def-search'} className={'atk-def'} type={'text'}
+                                           placeholder={'min def'}/>
+                                </div>
+                            </div>
+
+                            <div id={'container-button-search'}>
+                                <input id={'button-search-formulary'}
+                                       className={'links'} type={'submit'} value={'search'}/>
+
+                            </div>
+
+                        </form>
+
+                    </div>
 
                 </div>
+
 
                 <div id={'main-container-search-results'}>
                     {multipleResults && nameIntroduced === false && <div id={'multiple-results-container'}>
@@ -424,9 +449,11 @@ export default function Home() {
                                 <div id={'stars'}><img id={'levels'} src={star} alt={'level'}/>
                                     <span>x</span> {cardFoundIndividual[0].level}
                                 </div>
-                                <div id={'atr'}><img id={'attribute-image'} src={setAttributes(cardFoundIndividual[0].attribute)}
+                                <div id={'atr'}><img id={'attribute-image'}
+                                                     src={setAttributes(cardFoundIndividual[0].attribute)}
                                                      alt={'type-attribute'}/></div>
-                                <div id={'race'}><img id={'race-img'} alt={'race'} src={setRaceImages(cardFoundIndividual[0].race)}/>
+                                <div id={'race'}><img id={'race-img'} alt={'race'}
+                                                      src={setRaceImages(cardFoundIndividual[0].race)}/>
                                     <span>[{cardFoundIndividual[0].race}</span><span>{type === 'Normal Monster' ? '' : '/' + cardFoundIndividual[0].type}]</span>
                                 </div>
                             </div>
@@ -439,10 +466,8 @@ export default function Home() {
                             <br/>
 
                             <div id={'atk-def-results'}>
-                                {!isMagicTrap && <div> <span id={'atk-results'}> ATK/ {atk} DEF/ {def}</span> </div> }
-                                <button onClick={ () => console.log(name) } onSubmit={handleSubmitLike} id={'card-liked'} >like</button>
-
-
+                                {!isMagicTrap && <div><span id={'atk-results'}> ATK/ {atk} DEF/ {def}</span></div>}
+                                <button onClick={handleSubmitLike} id={'card-liked'}>like</button>
                             </div>
 
                         </div>}
@@ -493,5 +518,4 @@ export default function Home() {
             </div>}
         </>
     )
-
 }
