@@ -3,6 +3,7 @@ import star from './raw/attributes/star-yugi.png';
 import LikeButton from "./LikeButton";
 import {setRaceImages, setAttributes} from './Utility'
 import Selector from "./Selector";
+import {ImageList, ImageListItem} from "@mui/material";
 
 export default function Home() {
 
@@ -37,7 +38,7 @@ export default function Home() {
 
     /*charges one specified by name card in an array*/
     const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
-    const [like, setLike] = useState(false);
+    const [cardList, setCardList] = useState([]);
 
     useEffect(() => {
         async function apiCall() {
@@ -266,7 +267,6 @@ export default function Home() {
     let handleSubmit = async e => {
         e.preventDefault();
 
-        if (name != null || name !== '') {
             try {
                 setNameIntroduced(true);
                 let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
@@ -302,18 +302,26 @@ export default function Home() {
                 console.log(err);
                 setFound(false);
             }
-        } else if (name == null && type != null) {
+
+    }
+
+    let handleSubmitFields = async e => {
+        e.preventDefault();
+        if (type != null) {
             try {
                 setMultipleResults(true);
-                setFound(true);
-                setNameIntroduced(false);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type);
-                //console.log(cardsFound);
-                console.log('Multiple found: ' + cardsFound[0].name + '\n' + cardsFound[0].type + '\n' + cardsFound[0].image.image_url);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                console.log(cardImages);
+                setCardList(cardImagesArray);
 
             } catch (err) {
                 console.log(err);
-                setFound(false);
             }
         }
     }
@@ -372,7 +380,7 @@ export default function Home() {
 
 
                     <div id={'main-container-searcher'}>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmitFields}>
 
                             <div id={'container-input-type-search'}>
                                 <p className={'text-labels'}> type:</p>
@@ -428,12 +436,16 @@ export default function Home() {
 
 
                 <div id={'main-container-search-results'}>
-                    {multipleResults && nameIntroduced === false && <div id={'multiple-results-container'}>
+                    {multipleResults  && <div id={'multiple-results-container'}>
 
                         <div id={'multiple-results'}>
                             <div id={'multiple-cards'}>
-                                <p>multiple cards</p>
-                                {<img src={image} alt={'multiple-images'}/>}
+                                {cardList.map( (d, idx)=> {
+                                    return (<div key={idx} >
+                                        <img src={d} alt={'image'}/>
+                                    </div>)
+                                })}
+
                             </div>
                         </div>
 
@@ -442,7 +454,7 @@ export default function Home() {
                         {found && <img id={'image-card'} src={image} alt={'card received'}/>}
                     </div>
                     <div id={'result-data-container'}>
-                        {found && nameIntroduced && <div id={'result-data'}>
+                        {found && <div id={'result-data'}>
                             <p id={'name-result-card'}> {cardFoundIndividual[0].name}  </p>
                             <p> {cardFoundIndividual[0].type}  </p>
                             <div id={'lvl-atr'}>
