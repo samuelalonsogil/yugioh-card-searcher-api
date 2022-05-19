@@ -167,10 +167,10 @@ export default function Home() {
     }
 
     let handleSubmit = async e => {
-        setNameIntroduced(true);
-        if (multipleResults) e.reload();
         e.preventDefault();
 
+        if (name!=='' && type ==='' && race==='' && attribute==='' && level===0 && atk===''&& def===''){
+            setNameIntroduced(true);
             try {
                 setNameIntroduced(true);
                 let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
@@ -207,12 +207,7 @@ export default function Home() {
                 setFound(false);
             }
 
-    }
-
-    let handleSubmitFields = async e => {
-        if (nameIntroduced) e.reload();
-        e.preventDefault();
-        if (type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
+        }else if (type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
             try {
                 setMultipleResults(true);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type);
@@ -532,6 +527,13 @@ export default function Home() {
                 console.log(err);
             }
         }
+
+    }
+
+    let handleSubmitFields = async e => {
+        if (nameIntroduced) e.reload();
+        e.preventDefault();
+
     }
 
     let handleSubmitLike = async (e) => {
@@ -568,7 +570,7 @@ export default function Home() {
 
                 <div id={'searcher'}>
 
-                    <div id={'name-container-searcher'}>
+                    <div id={'main-container-searcher'}>
                         <form onSubmit={handleSubmit}>
 
                             <div id={'container-input-name-search'}>
@@ -576,19 +578,6 @@ export default function Home() {
                                 <input id={'input-name-search'} type={'text'} placeholder={'card name...'} name={'name'}
                                        onChange={handleChange}/>
                             </div>
-
-                            <div id={'container-button-search-name'}>
-                                <input id={'button-multiple-formulary'} className={'links'} type={'submit'}
-                                       value={'search by name'}/>
-                            </div>
-
-
-                        </form>
-                    </div>
-
-
-                    <div id={'main-container-searcher'}>
-                        <form onSubmit={handleSubmitFields}>
 
                             <div id={'container-input-type-search'}>
                                 <p className={'text-labels'}> type:</p>
