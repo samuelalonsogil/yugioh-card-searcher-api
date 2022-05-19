@@ -146,6 +146,8 @@ export default function Home() {
     let handleChange = e => {
         const {name, value} = e.target;
         name === 'name' ? setName(value) : alert('error');
+        if(value!=='')setNameIntroduced(true) ;
+        else setNameIntroduced(false);
     }
 
     /*handleChange type*/
@@ -170,9 +172,7 @@ export default function Home() {
         e.preventDefault();
 
         if (name!=='' && type ==='' && race==='' && attribute==='' && level===0 && atk===''&& def===''){
-            setNameIntroduced(true);
             try {
-                setNameIntroduced(true);
                 let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
                 setCardFoundIndividual(cardFound);
                 let arrayImages = Object.keys(cardFound[0].image)
@@ -530,12 +530,6 @@ export default function Home() {
 
     }
 
-    let handleSubmitFields = async e => {
-        if (nameIntroduced) e.reload();
-        e.preventDefault();
-
-    }
-
     let handleSubmitLike = async (e) => {
         e.preventDefault();
         console.log(name);
@@ -633,7 +627,7 @@ export default function Home() {
 
 
                 <div id={'main-container-search-results'}>
-                    {multipleResults &&<div id={'multiple-results-container'}>
+                    {multipleResults && nameIntroduced===false?<div id={'multiple-results-container'}>
 
                         <div id={'multiple-results'}>
                             <div id={'multiple-cards'}>
@@ -646,7 +640,7 @@ export default function Home() {
                             </div>
                         </div>
 
-                    </div>}
+                    </div>: null}
                     <div id={'result-container'}>
                         {found && <img id={'image-card'} src={image} alt={'card received'}/>}
                     </div>
