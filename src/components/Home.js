@@ -1,9 +1,7 @@
 import {useState, useEffect} from "react";
 import star from './raw/attributes/star-yugi.png';
-import LikeButton from "./LikeButton";
 import {setRaceImages, setAttributes} from './Utility'
 import Selector from "./Selector";
-import {ImageList, ImageListItem} from "@mui/material";
 
 export default function Home() {
 
@@ -76,6 +74,7 @@ export default function Home() {
                 if (!arrayAux.includes(e.type)) arrayAux.push(e.type);
                 return arrayAux;
             });
+            arrayAux.push('');
             setTypeArray(arrayAux.map(e => {
                 return {
                     value: e, label: e
@@ -94,6 +93,7 @@ export default function Home() {
                 if (!arrayAuxAttributes.includes(e.attribute)) arrayAuxAttributes.push(e.attribute);
                 return arrayAuxAttributes;
             });
+            arrayAuxAttributes.push('');
             setAttributeArray(arrayAuxAttributes.map(e => {
                 return {
                     value: e, label: e
@@ -111,6 +111,7 @@ export default function Home() {
                 if (!arrayLvlsAux.includes(e.level)) arrayLvlsAux.push(e.level);
                 return arrayLvlsAux;
             });
+            arrayLvlsAux.push('');
             setLevelArray(arrayLvlsAux.map(e => {
                 return {
                     value: e, label: e
@@ -129,6 +130,7 @@ export default function Home() {
                 if (!arrayRacesAux.includes(e.race)) arrayRacesAux.push(e.race);
                 return arrayRacesAux;
             });
+            arrayRacesAux.push('');
             setRaceArray(arrayRacesAux.map(e => {
                 return {
                     value: e, label: e
@@ -147,116 +149,16 @@ export default function Home() {
     }
 
     /*handleChange type*/
-    let handleSelectTypeChange = ({value}) => {
-        setType(value);
-        console.log('value: ' + value);
-
-        async function getByType() {
-
-            let cardTypeFound = completeArrayCards.filter((e) => e.type === value);
-            let arrayImages = Object.keys(cardTypeFound[0].image)
-                .map(function (key) {
-                    return cardTypeFound[0].image[key];
-                });
-            let getAllByType = () => cardTypeFound.map(e => {
-                return {
-                    name: e.name,
-                    type: e.type,
-                    image: arrayImages[1]
-                };
-            });
-
-            console.log(getAllByType());
-
-        }
-
-        getByType();
-
-    }
+    let handleSelectTypeChange = ({value}) => setType(value);
 
     /*handleChange type*/
-    let handleSelectRaceChange = ({value}) => {
-        setRace(value);
-        console.log('value: ' + value);
-
-        async function getByRace() {
-
-            let cardRaceFound = completeArrayCards.filter((e) => e.race === value);
-            let arrayImages = Object.keys(cardRaceFound[0].image)
-                .map(function (key) {
-                    return cardRaceFound[0].image[key];
-                });
-            let getAllByRace = () => cardRaceFound.map(e => {
-                return {
-                    name: e.name,
-                    race: e.race,
-                    image: arrayImages[1]
-                };
-            });
-
-            console.log(getAllByRace());
-
-        }
-
-        getByRace();
-
-    }
+    let handleSelectRaceChange = ({value}) => setRace(value);
 
     /*handleChange level*/
-    let handleSelectLevelChange = ({value}) => {
-        setLevel(value);
-        console.log('value: ' + value);
-
-        async function getByLevel() {
-
-            let cardLevelFound = completeArrayCards.filter((e) => e.level === value);
-            let arrayImages = Object.keys(cardLevelFound[0].image)
-                .map(function (key) {
-                    return cardLevelFound[0].image[key];
-                });
-            let getAllByLevel = () => cardLevelFound.map(e => {
-                return {
-                    name: e.name,
-                    level: e.level,
-                    image: arrayImages[1]
-                };
-            });
-
-            console.log(getAllByLevel());
-
-        }
-
-        getByLevel();
-
-    }
+    let handleSelectLevelChange = ({value}) => setLevel(value);
 
     /*handleChange attribute*/
-    let handleSelectAttributeChange = ({value}) => {
-        setAttribute(value);
-        console.log('value: ' + value);
-
-        async function getByAttribute() {
-
-            let cardAttributeFound = completeArrayCards.filter((e) => e.attribute === value);
-            let arrayImages = Object.keys(cardAttributeFound[0].image)
-                .map(function (key) {
-                    return cardAttributeFound[0].image[key];
-                });
-            let getAllByAttribute = () => cardAttributeFound.map(e => {
-                return {
-                    name: e.name,
-                    attribute: e.attribute,
-                    image: arrayImages[1]
-                };
-            });
-
-            console.log(getAllByAttribute());
-
-        }
-
-        getByAttribute();
-
-    }
+    let handleSelectAttributeChange = ({value}) => setAttribute(value);
 
     /*handleChange atk*/
     let handleSelectAtkChange = e => {
@@ -265,6 +167,8 @@ export default function Home() {
     }
 
     let handleSubmit = async e => {
+        setNameIntroduced(true);
+        if (multipleResults) e.reload();
         e.preventDefault();
 
             try {
@@ -306,8 +210,9 @@ export default function Home() {
     }
 
     let handleSubmitFields = async e => {
+        if (nameIntroduced) e.reload();
         e.preventDefault();
-        if (type != null) {
+        if (type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
             try {
                 setMultipleResults(true);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type);
@@ -317,7 +222,310 @@ export default function Home() {
                     }
                 });
                 let cardImagesArray = cardImages.map( (e) => e.image );
-                console.log(cardImages);
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type !== '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type !== '' && race !=='' && attribute !=='' && level===0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race && e.attribute ===attribute);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type !== '' && race !=='' && attribute !=='' && level!==0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race && e.attribute ===attribute && e.level === level);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type !== '' && race !=='' && attribute !=='' && level!==0 && atk!==''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race && e.attribute ===attribute && e.level === level && e.atk === atk);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type !== '' && race !=='' && attribute !=='' && level!==0 && atk!==''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race
+                    && e.attribute ===attribute && e.level === level && e.atk === atk && e.def === def);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.race ===race);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race !=='' && attribute!=='' && level===0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.race ===race && e.attribute ===attribute );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race !=='' && attribute!=='' && level!==0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.race ===race && e.attribute ===attribute && e.level ===level );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race !=='' && attribute!=='' && level!==0 && atk!==''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.race ===race && e.attribute ===attribute && e.level ===level&& e.atk ===atk );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race !=='' && attribute!=='' && level!==0 && atk!==''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.race ===race && e.attribute ===attribute
+                    && e.level ===level && e.atk ===atk && e.def === def );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute!=='' && level===0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.attribute ===attribute );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute!=='' && level!==0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.attribute ===attribute && e.level ===level);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute!=='' && level!==0 && atk!==''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.attribute ===attribute && e.level ===level
+                    && e.atk ===atk);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute!=='' && level!==0 && atk!==''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.attribute ===attribute && e.level ===level
+                    && e.atk ===atk && e.def ===def);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level!==0 && atk===''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.level ===level );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level!==0 && atk!==''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.level ===level && e.atk===atk );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level!==0 && atk!==''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.level ===level && e.atk===atk && e.def===def );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level===0 && atk!==''&& def===''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.atk===atk );
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level===0 && atk!==''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.atk===atk && e.def===def);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
+                setCardList(cardImagesArray);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }else if(type === '' && race ==='' && attribute==='' && level===0 && atk===''&& def!==''){
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.def===def);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                let cardImagesArray = cardImages.map( (e) => e.image );
                 setCardList(cardImagesArray);
 
             } catch (err) {
@@ -436,7 +644,7 @@ export default function Home() {
 
 
                 <div id={'main-container-search-results'}>
-                    {multipleResults  && <div id={'multiple-results-container'}>
+                    {multipleResults &&<div id={'multiple-results-container'}>
 
                         <div id={'multiple-results'}>
                             <div id={'multiple-cards'}>
