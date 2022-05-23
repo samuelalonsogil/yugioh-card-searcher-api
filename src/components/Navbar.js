@@ -12,6 +12,9 @@ export default function Navbar() {
                 <Link to='/randomCard' style={{textDecoration: 'none'}}>
                     <button id={'random-card-button'} className={'links'}  >Random card</button>
                 </Link>
+                <Link to='/likedCards' style={{textDecoration: 'none'}}>
+                    <button id={'liked-cards-button'} className={'links'}  >Liked cards</button>
+                </Link>
             </div>
 
             <div id={'container-search-card-bar'}>

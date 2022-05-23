@@ -95,4 +95,6 @@ function setAttributes(attribute) {
 
 }
 
+
+
 export {setRaceImages, setAttributes};
