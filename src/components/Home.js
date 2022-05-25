@@ -33,7 +33,6 @@ export default function Home() {
 
     /*charges all the cards in an array*/
     const [completeArrayCards, setCompleteArrayCards] = useState([]);
-    const [completeArrayCardsList, setCompleteArrayCardsList] = useState([]);
 
     /*charges one specified by name card in an array*/
     const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
@@ -63,7 +62,6 @@ export default function Home() {
                 }
             });
             setCompleteArrayCards(getAllCards);
-            setCompleteArrayCardsList(getAllCards);
             /*get types*/
             let arrayAux = [];
             let getAllTypes = () => data.data.map(e => {
@@ -112,7 +110,6 @@ export default function Home() {
                 if (!arrayLvlsAux.includes(e.level)) arrayLvlsAux.push(e.level);
                 return arrayLvlsAux;
             });
-            arrayLvlsAux.push('');
             setLevelArray(arrayLvlsAux.map(e => {
                 return {
                     value: e, label: e
@@ -180,9 +177,19 @@ export default function Home() {
                 type,setIsMagicTrap);
 
         }else if (name === '' && type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
-            petitionByName(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
-                setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
-                type,race, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList);
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                setCardList(cardImages);
+
+            } catch (err) {
+                console.log(err);
+            }
         }else if(type !== '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
             try {
                 setMultipleResults(true);

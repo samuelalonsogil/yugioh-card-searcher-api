@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 
-export default function(){
+export default function () {
     const url = `http://localhost:3001/cards/`;
+    const [_id, setId] = useState('');
     const [name, setName] = useState('');
     const [found, setFound] = useState(false);
     const [image, setImage] = useState('');
@@ -16,47 +17,58 @@ export default function(){
     const [cardPrices, setCardPrices] = useState([]);
     const [completeArray, setCompleteArray] = useState([]);
 
-    /*<div id={'multiple-results'}>
-                            <div id={'multiple-cards'}>
-                                {cardList.map( (d, idx)=> {
-                                    return (<div key={idx} >
-                                        <img src={d} alt={'image'}/>
-                                    </div>)
-                                })}
-
-                            </div>
-                        </div>*/
-
     useEffect(() => {
 
-        const fetchData =async () => {
+        const fetchData = async () => {
             const data = await fetch(url);
             const json = await data.json();
             console.log(json.data);
-
+            console.log(json.data[0]._id);
             setCompleteArray(json.data);
-            console.log(completeArray);
 
-            completeArray!==[]?setFound(true):setFound(false);
-            console.log(found);
 
-            setName(json.name);
-            setImage(json.image);
-            setType(json.type);
-            setAttribute(json.attribute || json.type);
-            setDescription(json.desc);
-            setLevel(json.level);
-            setRace(json.race);
-            setAtk(json.atk);
-            setDef(json.def);
-            setCardsets(json.card_sets);
-            setCardPrices(json.card_prices);
         }
         fetchData().catch(console.error);
 
     }, []);
 
-    return ( <>
 
-    </> )
+    const handleSubmitDelete = async (e) => {
+
+        try {
+            const rawResponse = await fetch(`http://localhost:3001/cards/${_id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const content = await rawResponse.json();
+            console.log(content);
+
+        } catch (err) {
+            alert('fail deleting');
+        }
+    }
+
+    return (<>
+
+        <div id={'multiple-results'}>
+            <div id={'multiple-cards'}>
+                {completeArray.map((d, idx) => {
+                    return (<>
+                            <img key={idx} className={'image-from-list'} src={d.image} alt={'image'}/>
+                            <button className={'links'} type={'submit'} onClick={handleSubmitDelete}>delete</button>
+
+                        </>
+
+
+                    )
+                })}
+
+            </div>
+        </div>
+
+    </>)
 }

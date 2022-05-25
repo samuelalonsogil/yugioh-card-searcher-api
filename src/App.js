@@ -16,6 +16,7 @@ export default function App(){
                         <Route path={'/randomCard'} element = {<RandomCard/>} />
                         <Route path={'/likedCards'} element = {<LikedCards/>} />
 
+
                     </Routes>
             </div>
         </div>

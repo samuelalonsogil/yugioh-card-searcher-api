@@ -422,4 +422,14 @@ button:hover {
     margin-top: 20px;
 }
 
+.container-multi-result{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+}
+
+.image-from-list{
+    width: 300px;
+}
 
