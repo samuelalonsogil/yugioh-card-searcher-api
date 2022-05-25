@@ -108,10 +108,6 @@ export default function RandomCard() {
                                 {!isMagicTrap && <span id={'atk-results'}> ATK/ {atk} DEF/ {def}</span>}
                                 <button onClick={handleSubmitLike} id={'card-liked'}>like</button>
 
-                                <br/>
-                                <br/>
-                                <br/>
-
                             </div>
 
                         </div>}
@@ -124,7 +120,7 @@ export default function RandomCard() {
             </div>
 
 
-            {found && <div id={'card-sets-prices-container'}>
+            {found && <div id={'card-sets-prices-container-random'}>
                 <div id={'card-sets-results'}>
                     <h3>Card sets:</h3>
                     {cardSets.map(function (d, idx) {

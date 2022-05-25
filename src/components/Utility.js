@@ -95,6 +95,217 @@ function setAttributes(attribute) {
 
 }
 
+function _usesStates(setName, setType, setImage, setAttribute, setDescription, setLevel, setRace, setAtk, setDef,
+                     setArchetype, archetype, setCardsets, setCardPrices,cardFound, setFound, type, setIsMagicTrap){
+
+    let arrayImages = Object.keys(cardFound[0].image).map(function (key) {
+            return cardFound[0].image[key];
+        });
+
+    if (cardFound[0].name !== null) {
+        setFound(true);
+        setName(cardFound[0].name);
+        setType(cardFound[0].type);
+        setImage(arrayImages[1]);
+        setAttribute(cardFound[0].attribute || cardFound[0].type);
+        setDescription(cardFound[0].desc);
+        setLevel(cardFound[0].level);
+        setRace(cardFound[0].race);
+        setAtk(cardFound[0].atk);
+        setDef(cardFound[0].def);
+        setArchetype(archetype);
+        setCardsets(cardFound[0].card_sets);
+        setCardPrices(Object.keys(cardFound[0].card_prices)
+            .map(function (key) {
+                return cardFound[0].card_prices[key];
+            }));
+
+        if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true);
+    }
+
+}
+
+function petitionByName(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                        setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                        type, setIsMagicTrap) {
+    try {
+        let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
+        setCardFoundIndividual(cardFound);
+
+        _usesStates( setName, setType, setImage, setAttribute, setDescription, setLevel, setRace, setAtk, setDef,
+            setArchetype, archetype, setCardsets, setCardPrices,cardFound, setFound, type, setIsMagicTrap );
+
+    } catch (err) {
+        console.log(err);
+        setFound(false);
+    }
+}
+
+function _usesStatesFields(setName, setType, setImage, setAttribute,
+                           setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                           type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound){
+
+    let arrayImages = Object.keys(cardsFound[0].image)
+        .map(function (key) {
+            return cardsFound[0].image[key];
+        });
+
+    setNameIntroduced(false);
+    setMultipleResults(true);
+    setName(cardsFound[0].name);
+    setType(cardsFound[0].type);
+    setImage(arrayImages[1]);
+    setAttribute(cardsFound[0].attribute || cardsFound[0].type);
+    setDescription(cardsFound[0].desc);
+    setLevel(cardsFound[0].level);
+    setRace(cardsFound[0].race);
+    setAtk(cardsFound[0].atk);
+    setDef(cardsFound[0].def);
+    setArchetype(archetype);
+    setCardsets(cardsFound[0].card_sets);
+    setCardPrices(Object.keys(cardsFound[0].card_prices)
+        .map(function (key) {
+            return cardsFound[0].card_prices[key];
+        }));
+
+    if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true);
+
+}
 
 
-export {setRaceImages, setAttributes};
+function petitionByType(completeArrayCards, name, setFound, setName, setType, setImage, setAttribute,
+                         setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                         type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type);
+        _usesStatesFields(setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function petitionByType02(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                        setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                        type,race, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race === race);
+
+        /*_usesStatesFields(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);*/
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function petitionByType03(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                          setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                          type,race, attribute , setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race === race && e.attribute === attribute);
+        _usesStatesFields(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function petitionByType04(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                          setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                          type,race, attribute ,level, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race === race && e.attribute === attribute && e.level === level);
+        _usesStatesFields(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function petitionByType05(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                          setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                          type,race, attribute ,level, atk, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race === race && e.attribute === attribute && e.level === level
+            && e.atk === atk);
+        _usesStatesFields(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+function petitionByType06(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                          setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                          type,race, attribute ,level, atk,def, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList) {
+    try {
+        let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race === race && e.attribute === attribute && e.level === level
+            && e.atk === atk && e.def === def);
+        _usesStatesFields(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+            setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+            type, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList,cardsFound);
+
+        let cardImages = cardsFound.map(e => {
+            return {
+                name: e.name,
+                image: e.image.image_url
+            }
+        });
+        setCardList(cardImages);
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export {_usesStatesFields,setRaceImages, setAttributes, petitionByName, petitionByType, petitionByType02, petitionByType03, petitionByType04, petitionByType05, petitionByType06};

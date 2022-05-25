@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import star from './raw/attributes/star-yugi.png';
-import {setRaceImages, setAttributes} from './Utility'
+import {setRaceImages, setAttributes, petitionByName, _usesStatesFields} from './Utility'
 import Selector from "./Selector";
 
 export default function Home() {
@@ -33,6 +33,7 @@ export default function Home() {
 
     /*charges all the cards in an array*/
     const [completeArrayCards, setCompleteArrayCards] = useState([]);
+    const [completeArrayCardsList, setCompleteArrayCardsList] = useState([]);
 
     /*charges one specified by name card in an array*/
     const [cardFoundIndividual, setCardFoundIndividual] = useState([]);
@@ -62,7 +63,7 @@ export default function Home() {
                 }
             });
             setCompleteArrayCards(getAllCards);
-
+            setCompleteArrayCardsList(getAllCards);
             /*get types*/
             let arrayAux = [];
             let getAllTypes = () => data.data.map(e => {
@@ -168,60 +169,20 @@ export default function Home() {
         atk === 'atk' ? setAtk(value) : alert('error');
     }
 
+
+
     let handleSubmit = async e => {
         e.preventDefault();
 
-        if (name!=='' && type ==='' && race==='' && attribute==='' && level===0 && atk===''&& def===''){
-            try {
-                let cardFound = completeArrayCards.filter((e) => e.name.toLowerCase() === name.toLowerCase());
-                setCardFoundIndividual(cardFound);
-                let arrayImages = Object.keys(cardFound[0].image)
-                    .map(function (key) {
-                        return cardFound[0].image[key];
-                    });
+        if (name!==''){
+            petitionByName(completeArrayCards,setCardFoundIndividual,name,setFound,setName,setType,setImage,setAttribute,
+                setDescription,setLevel,setRace,setAtk,setDef,setArchetype,archetype,setCardsets,setCardPrices,
+                type,setIsMagicTrap);
 
-                if (cardFound[0].name !== null) {
-                    setFound(true);
-                    setName(cardFound[0].name);
-                    setType(cardFound[0].type);
-                    setImage(arrayImages[1]);
-                    setAttribute(cardFound[0].attribute || cardFound[0].type);
-                    setDescription(cardFound[0].desc);
-                    setLevel(cardFound[0].level);
-                    setRace(cardFound[0].race);
-                    setAtk(cardFound[0].atk);
-                    setDef(cardFound[0].def);
-                    setArchetype(archetype);
-                    setCardsets(cardFound[0].card_sets);
-                    setCardPrices(Object.keys(cardFound[0].card_prices)
-                        .map(function (key) {
-                            return cardFound[0].card_prices[key];
-                        }));
-
-                    if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true);
-                }
-
-
-            } catch (err) {
-                console.log(err);
-                setFound(false);
-            }
-
-        }else if (type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
-            try {
-                setMultipleResults(true);
-                let cardsFound = completeArrayCards.filter((e) => e.type === type);
-                let cardImages = cardsFound.map(e => {
-                    return {
-                        image: e.image.image_url
-                    }
-                });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
-
-            } catch (err) {
-                console.log(err);
-            }
+        }else if (name === '' && type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
+            petitionByName(completeArrayCards, setCardFoundIndividual, name, setFound, setName, setType, setImage, setAttribute,
+                setDescription, setLevel, setRace, setAtk, setDef, setArchetype, archetype, setCardsets, setCardPrices,
+                type,race, setIsMagicTrap,setNameIntroduced,setMultipleResults,setCardList);
         }else if(type !== '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
             try {
                 setMultipleResults(true);
@@ -231,8 +192,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -246,8 +206,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -261,8 +220,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -276,8 +234,8 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -292,8 +250,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -307,8 +264,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -322,8 +278,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -337,8 +292,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -352,8 +306,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -368,8 +321,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -383,8 +335,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -398,8 +349,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -414,8 +364,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -430,8 +379,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -445,8 +393,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -460,8 +407,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -475,8 +421,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -490,8 +435,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -505,8 +449,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -520,8 +463,7 @@ export default function Home() {
                         image: e.image.image_url
                     }
                 });
-                let cardImagesArray = cardImages.map( (e) => e.image );
-                setCardList(cardImagesArray);
+                setCardList(cardImages);
 
             } catch (err) {
                 console.log(err);
@@ -633,7 +575,9 @@ export default function Home() {
                             <div id={'multiple-cards'}>
                                 {cardList.map( (d, idx)=> {
                                     return (<div key={idx} >
-                                        <img src={d} alt={'image'}/>
+                                        <img src={d.image} alt={'image'}/>
+                                        <button onClick={handleSubmitLike} id={'card-liked'}>like</button>
+
                                     </div>)
                                 })}
 
@@ -642,10 +586,10 @@ export default function Home() {
 
                     </div>: null}
                     <div id={'result-container'}>
-                        {found && <img id={'image-card'} src={image} alt={'card received'}/>}
+                        {found && multipleResults===false && <img id={'image-card'} src={image} alt={'card received'}/>}
                     </div>
                     <div id={'result-data-container'}>
-                        {found && <div id={'result-data'}>
+                        {found && multipleResults===false && <div id={'result-data'}>
                             <p id={'name-result-card'}> {cardFoundIndividual[0].name}  </p>
                             <p> {cardFoundIndividual[0].type}  </p>
                             <div id={'lvl-atr'}>
@@ -683,7 +627,7 @@ export default function Home() {
             </div>
 
 
-            {found && nameIntroduced && <div id={'card-sets-prices-container'}>
+            {found && multipleResults===false && <div id={'card-sets-prices-container'}>
                 <div id={'card-sets-results'}>
                     <h3>Card sets:</h3>
                     {cardSets.map(function (d, idx) {

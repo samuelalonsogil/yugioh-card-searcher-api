@@ -13,10 +13,11 @@ code {
     monospace;
 }
 
-a{
+a {
     color: white;
 }
-a:visited{
+
+a:visited {
     color: indianred;
 }
 
@@ -109,7 +110,7 @@ a:hover {
     background-color: orange;
 }
 
-#button-multiple-formulary{
+#button-multiple-formulary {
     background-color: lightslategrey;
 }
 
@@ -350,7 +351,7 @@ button:hover {
     justify-content: center;
 }
 
-#card-sets-results{
+#card-sets-results {
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -365,7 +366,7 @@ button:hover {
     font-size: small;
 }
 
-#card-prices-results{
+#card-prices-results {
     display: flex;
     flex-direction: column;
     align-self: flex-start;
@@ -381,14 +382,22 @@ button:hover {
     margin-left: -220px;
 }
 
-#card-sets-prices-container{
+#card-sets-prices-container {
     display: flex;
     flex-direction: row-reverse;
     justify-content: space-evenly;
 }
 
+#card-sets-prices-container-random {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-evenly;
+    margin-left: 200px;
+    margin-bottom: 100px;
+}
 
-#card-liked{
+
+#card-liked {
     margin-top: 10px;
     margin-bottom: 20px;
 
@@ -404,12 +413,12 @@ button:hover {
 
 }
 
-#image-card-random{
+#image-card-random {
     width: 300px;
 
 }
 
-#result-container-random{
+#result-container-random {
     margin-top: 20px;
 }
 

@@ -14,18 +14,34 @@ export default function(){
     const [def, setDef] = useState('');
     const [cardSets, setCardsets] = useState([]);
     const [cardPrices, setCardPrices] = useState([]);
-    const [isMagicTrap, setIsMagicTrap] = useState(false);
+    const [completeArray, setCompleteArray] = useState([]);
+
+    /*<div id={'multiple-results'}>
+                            <div id={'multiple-cards'}>
+                                {cardList.map( (d, idx)=> {
+                                    return (<div key={idx} >
+                                        <img src={d} alt={'image'}/>
+                                    </div>)
+                                })}
+
+                            </div>
+                        </div>*/
 
     useEffect(() => {
 
         const fetchData =async () => {
             const data = await fetch(url);
             const json = await data.json();
-            console.log(json);
-            setFound(true);
+            console.log(json.data);
+
+            setCompleteArray(json.data);
+            console.log(completeArray);
+
+            completeArray!==[]?setFound(true):setFound(false);
+            console.log(found);
 
             setName(json.name);
-            setImage(json.card_images[0].image_url);
+            setImage(json.image);
             setType(json.type);
             setAttribute(json.attribute || json.type);
             setDescription(json.desc);
@@ -35,8 +51,6 @@ export default function(){
             setDef(json.def);
             setCardsets(json.card_sets);
             setCardPrices(json.card_prices);
-            if (type === 'Spell Card' || type === 'Trap Card') setIsMagicTrap(true)
-
         }
         fetchData().catch(console.error);
 
