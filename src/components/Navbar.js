@@ -17,10 +17,7 @@ export default function Navbar() {
                 </Link>
             </div>
 
-            <div id={'container-search-card-bar'}>
-                <input id={'search-card-bar'} className={'links'} type={'text'} placeholder={'search...'}/>
-                <input id={'button-search-navbar'} className={'links'} type={'submit'} value={'search'}/>
-            </div>
+
         </div>
 
 

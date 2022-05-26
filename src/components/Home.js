@@ -144,8 +144,14 @@ export default function Home() {
     let handleChange = e => {
         const {name, value} = e.target;
         name === 'name' ? setName(value) : alert('error');
+
         if(value!=='')setNameIntroduced(true) ;
         else setNameIntroduced(false);
+
+        if (value!=='' && multipleResults === true) {
+            e.reload();
+            setMultipleResults(false);
+        }
     }
 
     /*handleChange type*/
@@ -161,10 +167,16 @@ export default function Home() {
     let handleSelectAttributeChange = ({value}) => setAttribute(value);
 
     /*handleChange atk*/
-    let handleSelectAtkChange = e => {
-        const {atk, value} = e.target;
-        atk === 'atk' ? setAtk(value) : alert('error');
-    }
+    let handleSelectAtkChange = (e) => {
+        const {value, atk} = e.target;
+
+        console.log('Type of atk: ' + typeof atk);
+        console.log('Type of value: ' + typeof value);
+        console.log('Type of def: ' + typeof def);
+        console.log(atk);
+    };
+
+    let handleSelectDefChange = ({value}) => setDef(value);
 
 
 
@@ -176,7 +188,7 @@ export default function Home() {
                 setDescription,setLevel,setRace,setAtk,setDef,setArchetype,archetype,setCardsets,setCardPrices,
                 type,setIsMagicTrap);
 
-        }else if (name === '' && type !=='' && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
+        }else if (name === '' && type !== promiseArray[0] && race==='' && attribute==='' && level===0 && atk===''&& def==='') {
             try {
                 setMultipleResults(true);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type);
@@ -190,7 +202,22 @@ export default function Home() {
             } catch (err) {
                 console.log(err);
             }
-        }else if(type !== '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
+        }else if(type !== '' && race ==='' && attribute!=='' && level===0 && atk===''&& def==='') {
+            try {
+                setMultipleResults(true);
+                let cardsFound = completeArrayCards.filter((e) => e.type === type && e.attribute === attribute);
+                let cardImages = cardsFound.map(e => {
+                    return {
+                        image: e.image.image_url
+                    }
+                });
+                setCardList(cardImages);
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+            else if(type !== '' && race !=='' && attribute==='' && level===0 && atk===''&& def===''){
             try {
                 setMultipleResults(true);
                 let cardsFound = completeArrayCards.filter((e) => e.type === type && e.race ===race);
@@ -492,7 +519,8 @@ export default function Home() {
                 name: name,
                 type: type,
                 desc: description,
-                atk: atk, def: def,
+                atk: atk,
+                def: def,
                 level: level,
                 race: race,
                 attribute: attribute,
@@ -506,6 +534,7 @@ export default function Home() {
         const content = await rawResponse.json();
         console.log(content);
     }
+
     let placeholder = '';
     return (
         <>
@@ -537,7 +566,7 @@ export default function Home() {
                             </div>
 
                             <div id={'container-input-level-search'}>
-                                <p className={'text-labels'}> level:</p>
+                                <p className={'text-labels'}> level: *0 for none*</p>
                                 <Selector placeholder={placeholder = 'select level'} options={levelArray}
                                           onChange={handleSelectLevelChange}/>
                             </div>
@@ -558,7 +587,7 @@ export default function Home() {
                                 <div id={'container-input-def-search'}>
                                     <p className={'text-labels'}> def :</p>
                                     <input id={'input-def-search'} className={'atk-def'} type={'text'}
-                                           placeholder={'min def'}/>
+                                           placeholder={'min def'} onChange={handleSelectDefChange}/>
                                 </div>
                             </div>
 
@@ -581,11 +610,8 @@ export default function Home() {
                         <div id={'multiple-results'}>
                             <div id={'multiple-cards'}>
                                 {cardList.map( (d, idx)=> {
-                                    return (<div key={idx} >
-                                        <img src={d.image} alt={'image'}/>
-                                        <button onClick={handleSubmitLike} id={'card-liked'}>like</button>
-
-                                    </div>)
+                                    return (
+                                        <img className={'image-from-list'} key={idx} src={d.image} alt={'image'}/>)
                                 })}
 
                             </div>

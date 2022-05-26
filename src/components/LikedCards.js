@@ -25,7 +25,7 @@ export default function () {
             console.log(json.data);
             console.log(json.data[0]._id);
             setCompleteArray(json.data);
-
+            //setId(json.data[0]._id);
 
         }
         fetchData().catch(console.error);
@@ -34,7 +34,6 @@ export default function () {
 
 
     const handleSubmitDelete = async (e) => {
-
         try {
             const rawResponse = await fetch(`http://localhost:3001/cards/${_id}`, {
                 method: 'DELETE',
@@ -46,11 +45,12 @@ export default function () {
 
             const content = await rawResponse.json();
             console.log(content);
-
         } catch (err) {
             alert('fail deleting');
         }
     }
+
+    //<button className={'links'} type={'submit'} onClick={handleSubmitDelete}>delete</button>
 
     return (<>
 
@@ -59,7 +59,7 @@ export default function () {
                 {completeArray.map((d, idx) => {
                     return (<>
                             <img key={idx} className={'image-from-list'} src={d.image} alt={'image'}/>
-                            <button className={'links'} type={'submit'} onClick={handleSubmitDelete}>delete</button>
+
 
                         </>
 
